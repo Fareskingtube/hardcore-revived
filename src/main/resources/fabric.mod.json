@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "hardcore-revived",
+  "version": "${version}",
+  "name": "Hardcore Revived",
+  "description": "This is an mod that tries to enhance the multiplayer hardcore experience",
+  "authors": [
+    "Fareskingtube"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "LGPL-3.0-or-later",
+  "icon": "assets/hardcore-revived/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.fareskingtube.HardcoreRevived"
+    ],
+    "client": [
+      "net.fareskingtube.client.HardcoreRevivedClient"
+    ],
+    "fabric-datagen": [
+      "net.fareskingtube.client.HardcoreRevivedDataGenerator"
+    ]
+  },
+  "mixins": [
+    "hardcore-revived.mixins.json",
+    {
+      "config": "hardcore-revived.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
