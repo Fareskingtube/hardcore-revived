@@ -8,10 +8,10 @@
     "Fareskingtube"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/Fareskingtube",
+    "sources": "https://github.com/Fareskingtube/hardcore-revived"
   },
-  "license": "LGPL-3.0-or-later",
+  "license": "LGPL-2.1",
   "icon": "assets/hardcore-revived/icon.png",
   "environment": "*",
   "entrypoints": {
