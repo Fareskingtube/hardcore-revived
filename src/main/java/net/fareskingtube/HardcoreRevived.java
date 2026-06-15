@@ -2,6 +2,9 @@ package net.fareskingtube;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fareskingtube.component.ModDataComponentTypes;
+import net.fareskingtube.item.ModItemGroup;
+import net.fareskingtube.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,5 +15,9 @@ public class HardcoreRevived implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Loading...");
+
+        ModItems.registerModItems();
+        ModItemGroup.registerItemGroups();
+        ModDataComponentTypes.registerDataComponentTypes();
     }
 }

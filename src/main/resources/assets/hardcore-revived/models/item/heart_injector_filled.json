@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hardcore-revived:item/heart_injector_filled"
+  }
+}
