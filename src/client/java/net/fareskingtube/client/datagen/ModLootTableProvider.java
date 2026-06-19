@@ -15,5 +15,6 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         addDrop(ModBlocks.REVIVAL_ALTAR);
+        addDrop(ModBlocks.BLOOD_BLOCK);
     }
 }

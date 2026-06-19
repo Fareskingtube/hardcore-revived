@@ -8,6 +8,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 
 public class ModBlocks {
@@ -15,6 +16,11 @@ public class ModBlocks {
             .nonOpaque()
             .requiresTool()
             .strength(3.5F, 6.0F)));
+
+    public static final Block BLOOD_BLOCK = registerBlock("blood_block", new Block(AbstractBlock.Settings.create()
+            .strength(0.6F, 2F)
+            .sounds(BlockSoundGroup.NETHER_STEM)
+    ));
 
     private static void registerBlockItem(String name, Block block) {
         Registry.register(Registries.ITEM, Identifier.of(HardcoreRevived.MOD_ID, name), new BlockItem(block, new Item.Settings()));

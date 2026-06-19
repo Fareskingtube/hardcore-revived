@@ -3,14 +3,12 @@ package net.fareskingtube.multiblock;
 import net.fareskingtube.HardcoreRevived;
 import net.fareskingtube.block.ModBlocks;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import vazkii.patchouli.api.IMultiblock;
-import vazkii.patchouli.api.IStateMatcher;
 import vazkii.patchouli.api.PatchouliAPI;
 
 public class ModMultiblocks {
@@ -21,11 +19,11 @@ public class ModMultiblocks {
                             "___________",
                             "___________",
                             "____SeS____",
-                            "___BBBBB___",
+                            "___SBBBS___",
                             "__SB   BS__",
                             "__sB   Bn__",
                             "__SB   BS__",
-                            "___BBBBB___",
+                            "___SBBBS___",
                             "____SwS____",
                             "___________",
                             "___________",
@@ -120,7 +118,7 @@ public class ModMultiblocks {
             'P', Blocks.POLISHED_BLACKSTONE,
             'C', Blocks.CHISELED_POLISHED_BLACKSTONE,
             'G', Blocks.GOLD_BLOCK,
-            'b', Blocks.NETHERRACK,
+            'b', ModBlocks.BLOOD_BLOCK,
             '1', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(Properties.BLOCK_HALF, BlockHalf.TOP),
             '2', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.EAST).with(Properties.BLOCK_HALF, BlockHalf.TOP),
             '3', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.WEST).with(Properties.BLOCK_HALF, BlockHalf.TOP),
@@ -129,7 +127,7 @@ public class ModMultiblocks {
             'F', Blocks.NETHER_BRICK_FENCE,
             'T', Blocks.POLISHED_BLACKSTONE_BRICK_SLAB.getDefaultState().with(Properties.SLAB_TYPE, SlabType.TOP),
             'R', Blocks.REDSTONE_BLOCK,
-            '0', Blocks.NETHERRACK
+            '0', ModBlocks.BLOOD_BLOCK
     ));
 
     public static IMultiblock registerMultiBlock(String name, IMultiblock multiblock) {

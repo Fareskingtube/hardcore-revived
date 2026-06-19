@@ -2,14 +2,18 @@ package net.fareskingtube.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.fareskingtube.HardcoreRevived;
+import net.fareskingtube.block.entity.TickableBlockEntity;
 import net.fareskingtube.block.entity.custom.RevivalAltarBlockEntity;
 import net.fareskingtube.item.ModItems;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.ItemScatterer;
@@ -105,6 +109,7 @@ public class RevivalAltarBlock extends BlockWithEntity implements BlockEntityPro
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos,
                                              PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof RevivalAltarBlockEntity revivalAltarBlockEntity) {
+            revivalAltarBlockEntity.isMultiblock(world, revivalAltarBlockEntity.getPos());
             if (hand.equals(Hand.OFF_HAND)) return ItemActionResult.FAIL;
             if (revivalAltarBlockEntity.isEmpty() && stack.isOf(ModItems.HARDCORE_HEART)) {
                 if (!world.isClient()) {
@@ -132,6 +137,11 @@ public class RevivalAltarBlock extends BlockWithEntity implements BlockEntityPro
             }
         }
         return ItemActionResult.FAIL;
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return TickableBlockEntity.getTicker();
     }
 }
 

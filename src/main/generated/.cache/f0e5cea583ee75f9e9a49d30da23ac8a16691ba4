@@ -1,3 +1,6 @@
-// 1.21.1	2026-06-15T10:34:37.0401146	Hardcore Revived/Model Definitions
+// 1.21.1	2026-06-20T01:32:54.5313826	Hardcore Revived/Model Definitions
+a66dac69bcc6dd19077e6f97618ced09002d585a assets\hardcore-revived\blockstates\blood_block.json
+f01bc294d23b66553adb740055ca884cc93de3b4 assets\hardcore-revived\models\block\blood_block.json
+389cf582fd8880245213b86adbbb784e8bc06a14 assets\hardcore-revived\models\item\blood_block.json
 346fd902058b8bdb1f0f039bd8533f77aa60d7a9 assets\hardcore-revived\models\item\heart_extractor.json
 f0d2e750bc4253bb2238454b0900d84a5270fb51 assets\hardcore-revived\models\item\hardcore_heart.json
