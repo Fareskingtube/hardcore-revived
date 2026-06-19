@@ -11,9 +11,9 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 
 public class ModItemGroup {
-    public static final ItemGroup HARDCORE_REVIVED_GROUP = register("hardcore_group",
+    public static final ItemGroup HARDCORE_REVIVED_GROUP = register("hardcore_revived_group",
             FabricItemGroup.builder()
-                    .displayName(Text.translatable("itemGroup." + HardcoreRevived.MOD_ID + ".hardcore_group"))
+                    .displayName(Text.translatable("itemGroup." + HardcoreRevived.MOD_ID + ".hardcore_revived_group"))
                     .icon(ModItems.HARDCORE_HEART::getDefaultStack)
                     .entries((displayContext, entries) -> Registries.ITEM.getIds()
                             .stream()

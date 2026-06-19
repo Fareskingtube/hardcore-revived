@@ -3,5 +3,8 @@
   "item.hardcore-revived.heart_extractor": "Heart Extractor",
   "item.hardcore-revived.heart_injector.empty": "Empty Heart Injector",
   "item.hardcore-revived.heart_injector.filled": "Filled Heart Injector",
-  "itemGroup.hardcore-revived.hardcore_group": "Hardcore Revived"
+  "item.hardcore-revived.resuscitatio_mortuorum.name": "Resuscitatio Mortuorum",
+  "item.hardcore-revived.resuscitatio_mortuorum.landing_text": "Description",
+  "block.hardcore-revived.revival_altar": "Revival Altar",
+  "itemGroup.hardcore-revived.hardcore_revived_group": "Hardcore Revived"
 }

@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 // TODO: Make duration a config
 public class HardcoreHeartItem extends HoldActivateItem {
     public HardcoreHeartItem(Settings settings) {
-        super(settings, 50);
+        super(settings, 20);
     }
 
     @Override

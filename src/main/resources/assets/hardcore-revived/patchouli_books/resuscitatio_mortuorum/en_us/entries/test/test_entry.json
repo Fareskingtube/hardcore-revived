@@ -1,0 +1,13 @@
+{
+  "name": "Test Entry",
+  "icon": "minecraft:writable_book",
+  "category": "hardcore-revived:test_category",
+  "pages": [
+    {
+      "type": "patchouli:multiblock",
+      "name": "Test multiblock",
+      "multiblock_id": "hardcore-revived:revival_altar_multiblock",
+      "text": "This is a test entry, but it should show up!"
+    }
+  ]
+}
