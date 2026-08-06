@@ -4,7 +4,7 @@ This is a fabric minecraft mod that tries to enhance the multiplayer hardcore ex
 dead
 friends in a **Revival Altar** by **sacrificing** one of your **hearts**.
 
-# What it does
+# What the mod adds
 
 This mod allows you to revive your friends in hardcore by building a multiblock **(Revival Altar)** and placing your
 heart in it.
@@ -39,6 +39,8 @@ gifted to a friend or thrown into lava.
 This is the in game guide book that shows you what each item does how to get it.
 Also shows you a framework on how to build the [Altar Multiblock](#the-revival-altar) as shown in
 the [provided video](#the-altar).
+
+You should spawn with it when making a new world, but you can also craft it with a **book** and a **blood block**.
 
 # Requirements
 
