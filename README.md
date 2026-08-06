@@ -19,11 +19,11 @@ The Revival Altar is the center of this mod it has 2 main functions:
 
 ## The Altar
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/oQ9XKFr5kiY" title="Revival Altar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Revival Altar Video](https://i.ibb.co/ynv4TLf5/image.png)](https://youtu.be/oQ9XKFr5kiY)
 
 ## Revival
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/zcmzzAZ1ubY" title="Revival Altar Respawn" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Revival Altar Revival Video](https://i.ibb.co/BVvqgx4y/2026-08-06-14-42-15.png)](https://youtu.be/zcmzzAZ1ubY)
 
 ## Hardcore Heart
 
@@ -32,7 +32,13 @@ It can be obtained via **heart extractor**.
 Once you have a heart it can be reinjected via **Heart Injector**,
 gifted to a friend or thrown into lava.
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/Y6KFRJC33Tc" title="Heart Injector/Exrtactor" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Revival Altar Video](https://i.ibb.co/fYWgTYm4/2026-08-06-14-45-45.png)](https://youtu.be/Y6KFRJC33Tc)
+
+## Resuscitatio Mortuorum
+
+This is the in game guide book that shows you what each item does how to get it.
+Also shows you a framework on how to build the [Altar Multiblock](#the-revival-altar) as shown in
+the [provided video](#the-altar).
 
 # Requirements
 
