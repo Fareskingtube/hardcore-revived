@@ -91,6 +91,38 @@ The known places where generative was used to write code:
 
 1. Spawning particle methods in `src/main/java/net/fareskingtube/block/entity/custom/RevivalAltarBlockentity`
 
+# Credits
+
+## Authors
+
+1. [![](https://minotar.net/helm/d6313fc2-7814-4de1-8326-a468c509d038/15)](https://namemc.com/profile/d6313fc2-7814-4de1-8326-a468c509d038)
+   [Fareskingtube](https://github.com/Fareskingtube) (
+   Main & Only Dev,
+   Main Artist, 3D Artist, Builder, etc.)
+2. [![](https://minotar.net/helm/ec20c236-b99c-4d42-a633-dedcc41c4f94/15)](https://namemc.com/profile/ec20c236-b99c-4d42-a633-dedcc41c4f94)
+   [Itsbluefire_](https://namemc.com/profile/ec20c236-b99c-4d42-a633-dedcc41c4f94) (Builder)
+3. [![](https://minotar.net/helm/33e2ca4f-ba29-4dd3-b9f2-092a8a13ba21/15)](https://namemc.com/profile/33e2ca4f-ba29-4dd3-b9f2-092a8a13ba21)
+   [Oddsyy](https://namemc.com/profile/33e2ca4f-ba29-4dd3-b9f2-092a8a13ba21) (Builder)
+
+## Assets
+
+The following assets were "borrowed" from the following sources:
+
+* **Heart Injector** texture was taken
+  from [RFTools](https://github.com/McJtyMods/RFTools/blob/1.12/src/main/resources/assets/rftools/textures/items/syringeitem0.png)
+  under the [MIT License](https://github.com/McJtyMods/RFTools/blob/1.12/LICENSE.md).
+* **Heart Extractor** texture was taken
+  from [Chest Transporter](https://github.com/cubex2/chesttransporter/blob/master/src/main/resources/assets/chesttransporter/textures/items/ct_wood.png)
+  under the [GPL-3.0 License](https://github.com/cubex2/chesttransporter/blob/master/LICENSE)
+
+The assets above are temporary and for testing proposes only.
+
+* **Blood Block** texture was taken and scaled up
+  from [unused-textures](https://github.com/malcolmriley/unused-textures/blob/master/blocks/cheese_waxed_bottom.png)
+  under the [CC-BY-4.0 License](https://github.com/malcolmriley/unused-textures/blob/master/LICENSE)
+
+Any other assets were made entirely by the [authors](#authors).
+
 # Modpack Policy
 
 You're allowed to use this mod in your modpack. You don't have to ask permission .
