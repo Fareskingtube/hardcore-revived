@@ -5,10 +5,15 @@
   "name": "Hardcore Revived",
   "description": "This is an mod that tries to enhance the multiplayer hardcore experience",
   "authors": [
-    "Fareskingtube"
+    {
+      "name": "Fareskingtube",
+      "contact": {
+        "homepage": "https://github.com/Fareskingtube"
+      }
+    }
   ],
   "contact": {
-    "homepage": "https://github.com/Fareskingtube",
+    "homepage": "https://github.com/Fareskingtube/hardcore-revived",
     "sources": "https://github.com/Fareskingtube/hardcore-revived"
   },
   "license": "LGPL-2.1",

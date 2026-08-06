@@ -1,1 +1,9 @@
-// 1.21.1	2026-06-20T01:32:54.534504	Hardcore Revived/Recipes
+// 1.21.1	2026-08-06T10:09:41.5357193	Hardcore Revived/Recipes
+6307fc38b957e46fbff01471c15113fb38092f54 data\hardcore-revived\recipe\blood_block.json
+380ee2856b90416d16dabf493c8b904384a2d589 data\hardcore-revived\recipe\revival_altar.json
+67a3d30815d13a25c27622ee70d7a3704de2e063 data\hardcore-revived\advancement\recipes\misc\heart_extractor.json
+37889f1a7503bb306e7f71b17a7cf43d82e349a4 data\hardcore-revived\advancement\recipes\misc\revival_altar.json
+47906fdbf77bc05916b7782ea033bd45d94b80d9 data\hardcore-revived\advancement\recipes\misc\heart_injector.json
+995b8b817ff3aeb26f54fa4d7ef89d9767df2467 data\hardcore-revived\recipe\heart_injector.json
+67397da2afc55de8bdaabcaba6450e660102fbea data\hardcore-revived\advancement\recipes\misc\blood_block.json
+a7da8bc425706020554f5c16c442ee28cf82d121 data\hardcore-revived\recipe\heart_extractor.json
