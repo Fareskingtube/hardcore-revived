@@ -82,6 +82,15 @@ To install the mod you just need to put the `.jar` file in your
 `YOUR_MINECRAFT_INSTANCE/mods/` folder with the [Dependency Mods](#dependencies) on a [Fabric](https://fabricmc.net/)
 installation.
 
+# AI usage
+
+AI was usage was mostly limited to debugging and explaining some concepts/finding documentation since up-to-date
+documentation for mod development is fairly limited.
+
+The known places where generative was used to write code:
+
+1. Spawning particle methods in `src/main/java/net/fareskingtube/block/entity/custom/RevivalAltarBlockentity`
+
 # Modpack Policy
 
 You're allowed to use this mod in your modpack. You don't have to ask permission .

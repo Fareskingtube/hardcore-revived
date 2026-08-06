@@ -1,6 +1,5 @@
 package net.fareskingtube.block.entity.custom;
 
-import net.fareskingtube.HardcoreRevived;
 import net.fareskingtube.block.entity.ImplementedInventory;
 import net.fareskingtube.block.entity.ModBlockEntities;
 import net.fareskingtube.block.entity.TickableBlockEntity;
@@ -14,7 +13,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -36,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedInventory, TickableBlockEntity {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
@@ -55,11 +52,8 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
 
         World world = this.getWorld();
 
-        Boolean isHeart = !this.inventory.isEmpty();
-
         if (this.ticks++ % 20 == 0) {
             this.isMultiblock = isMultiblock(world, this.getPos());
-//            HardcoreRevived.LOGGER.info(String.valueOf(this.isMultiblock));
         }
         if (this.isMultiblock) {
             if (world.isClient()) {
@@ -72,7 +66,7 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
         }
     }
 
-    //    Claude made most of both of those methods
+    //    Claude made most of both of those particle spawning methods
     private void spawnParticles(World world) {
         if (this.ticks % 4 != 0) return; // every 2 ticks for density
 
