@@ -1,3 +1,5 @@
+[//]: # (TODO: Add Stats from cursefore like in https://github.com/cubex2/chesttransporter/blob/master/README.md)
+
 # Hardcore Revived
 
 This is a fabric minecraft mod that tries to enhance the multiplayer hardcore experience by allowing you to revive your

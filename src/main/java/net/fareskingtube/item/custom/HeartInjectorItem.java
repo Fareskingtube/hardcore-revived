@@ -13,7 +13,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-// TODO: Change Name and Sounds
 public class HeartInjectorItem extends HoldActivateItem {
     public HeartInjectorItem(Settings settings) {
         super(settings, 60);
