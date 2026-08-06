@@ -125,6 +125,6 @@ Any other assets were made entirely by the [authors](#authors).
 
 # Modpack Policy
 
-You're allowed to use this mod in your modpack. You don't have to ask permission .
+You're allowed to use this mod in your modpack. You don't have to ask permission.
 
 
