@@ -14,12 +14,15 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.BlockRotation;
@@ -27,10 +30,13 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedInventory, TickableBlockEntity {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
@@ -48,6 +54,8 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
         if (this.getWorld() == null) return;
 
         World world = this.getWorld();
+
+        Boolean isHeart = !this.inventory.isEmpty();
 
         if (this.ticks++ % 20 == 0) {
             this.isMultiblock = isMultiblock(world, this.getPos());
@@ -131,12 +139,18 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
         BlockPos pos = this.getPos();
         double radius = 5.5;
 
+        boolean isHeart = this.inventory.getFirst().getItem() == ModItems.HARDCORE_HEART;
+
         // Get all players within radius
         List<PlayerEntity> players = world.getEntitiesByClass(
                 PlayerEntity.class,
                 new Box(pos).expand(radius),
                 player -> true
         );
+
+        players.sort(Comparator.comparingDouble(p ->
+                p.squaredDistanceTo(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5)
+        ));
 
         for (PlayerEntity player : players) {
             player.addStatusEffect(new StatusEffectInstance(
@@ -147,6 +161,30 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
                     true,  // show particles
                     true   // show icon in HUD
             ));
+            // TODO: Replace current revive system with a data component in the Hardcore Heart Item
+            if (isHeart && player instanceof ServerPlayerEntity serverPlayer && serverPlayer.interactionManager.getGameMode() == GameMode.SPECTATOR) {
+                setStack(0, ItemStack.EMPTY);
+                markDirty();
+                serverPlayer.teleport(
+                        (ServerWorld) world,
+                        pos.getX() + 0.5,
+                        pos.getY() + 1,
+                        pos.getZ() + 0.5,
+                        180,
+                        0
+                );
+                serverPlayer.changeGameMode(GameMode.SURVIVAL);
+                world.playSound(null, pos, SoundEvents.ITEM_TOTEM_USE, SoundCategory.PLAYERS);
+                if (world instanceof ServerWorld serverWorld) {
+                    serverWorld.spawnParticles(
+                            ParticleTypes.TOTEM_OF_UNDYING,
+                            serverPlayer.getX(), serverPlayer.getY() + 1, serverPlayer.getZ(),
+                            30,
+                            0.5, 0.5, 0.5,
+                            0.1
+                    );
+                }
+            }
         }
     }
 
