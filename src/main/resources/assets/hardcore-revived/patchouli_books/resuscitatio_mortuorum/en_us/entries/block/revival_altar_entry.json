@@ -1,0 +1,13 @@
+{
+  "name": "Revival Altar Block",
+  "icon": "hardcore-revived:revival_altar",
+  "category": "hardcore-revived:block_category",
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "title": "Revival Altar Block",
+      "text": "This is the recipe of the revival altar block. The center of the full $(l:multiblock/revival_altar_entry)$(#5f1912)Revival Altar$()",
+      "recipe": "hardcore-revived:revival_altar"
+    }
+  ]
+}
