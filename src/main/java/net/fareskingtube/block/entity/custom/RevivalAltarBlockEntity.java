@@ -32,8 +32,7 @@ import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedInventory, TickableBlockEntity {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
@@ -53,8 +52,13 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
         World world = this.getWorld();
 
         if (this.ticks++ % 20 == 0) {
-            this.isMultiblock = isMultiblock(world, this.getPos());
+            boolean currentIsMultiblock = isMultiblock(world, this.getPos());
+            if (this.isMultiblock && !currentIsMultiblock) {
+                world.playSound(null, this.pos, SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.BLOCKS);
+            }
+            this.isMultiblock = currentIsMultiblock;
         }
+
         if (this.isMultiblock) {
             if (world.isClient()) {
                 spawnParticles(world);
@@ -62,7 +66,6 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
             } else {
                 applyEffectsToNearbyPlayers(world);
             }
-
         }
     }
 

@@ -1,7 +1,6 @@
 package net.fareskingtube.block.custom;
 
 import com.mojang.serialization.MapCodec;
-import net.fareskingtube.HardcoreRevived;
 import net.fareskingtube.block.entity.TickableBlockEntity;
 import net.fareskingtube.block.entity.custom.RevivalAltarBlockEntity;
 import net.fareskingtube.item.ModItems;
@@ -13,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.ItemScatterer;
@@ -68,6 +66,7 @@ public class RevivalAltarBlock extends BlockWithEntity implements BlockEntityPro
     public static final VoxelShape ALTAR_FINAL = VoxelShapes.combineAndSimplify(ALTAR_FULL_TOP, ALTAR_CORNERS_HOLLOW, BooleanBiFunction.OR);
 
     public static final MapCodec<RevivalAltarBlock> CODEC = RevivalAltarBlock.createCodec(RevivalAltarBlock::new);
+//    private static final Logger log = LoggerFactory.getLogger(RevivalAltarBlock.class);
 
     public RevivalAltarBlock(Settings settings) {
         super(settings);
