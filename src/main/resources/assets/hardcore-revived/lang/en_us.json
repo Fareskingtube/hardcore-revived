@@ -1,4 +1,6 @@
 {
+  "gui.hardcore-revived.player_selector_screen.title": "Select a player",
+  "gui.hardcore-revived.player_selector_screen.search": "Search for a player...",
   "item.hardcore-revived.hardcore_heart": "Hardcore Heart",
   "item.hardcore-revived.heart_extractor": "Heart Extractor",
   "item.hardcore-revived.heart_injector.empty": "Empty Heart Injector",
