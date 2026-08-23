@@ -1,5 +1,6 @@
 package net.fareskingtube.item.custom;
 
+import com.mojang.authlib.GameProfile;
 import net.fareskingtube.bridge.ModMainClientBridges;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +19,10 @@ public class HardcoreHeartItem extends HoldActivateItem {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (world.isClient() && user instanceof PlayerEntity player) {
             // Code after activation here
-            ModMainClientBridges.OPEN_PLAYER_PICKER.accept(List.of(player), player);
+            GameProfile profile = new GameProfile(player.getUuid(), player.getNameForScoreboard());
+            ModMainClientBridges.OPEN_PLAYER_PICKER.accept(
+                    List.of(profile, profile, profile, profile, profile, profile, profile, profile, profile, profile, profile,
+                            profile, profile, profile, profile, profile, profile), profile);
         }
         return stack;
     }

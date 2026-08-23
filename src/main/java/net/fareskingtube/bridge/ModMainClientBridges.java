@@ -1,11 +1,11 @@
 package net.fareskingtube.bridge;
 
-import net.minecraft.entity.player.PlayerEntity;
+import com.mojang.authlib.GameProfile;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 
 public class ModMainClientBridges {
-    public static BiConsumer<List<PlayerEntity>, PlayerEntity> OPEN_PLAYER_PICKER = (players, self) -> {
+    public static BiConsumer<List<GameProfile>, GameProfile> OPEN_PLAYER_PICKER = (players, self) -> {
     };
 }

@@ -2,7 +2,7 @@ package net.fareskingtube.client.bridge;
 
 
 import net.fareskingtube.bridge.ModMainClientBridges;
-import net.fareskingtube.client.screen.custom.PlayerSelectorScreen;
+import net.fareskingtube.client.gui.screen.custom.PlayerSelectorScreen;
 import net.minecraft.client.MinecraftClient;
 
 public class ModClientBridges {
