@@ -44,13 +44,43 @@ public class PlayerSelectorScreen extends Screen {
         int viewportWidth = this.width / 2;
 
         int searchFieldWidth = 175;
-        TextFieldWidget searchField = new TextFieldWidget(this.textRenderer, viewportWidth - searchFieldWidth / 2, 20, searchFieldWidth, 20,
-                Text.translatable("gui.hardcore-revived.player_selector_screen.search"));
+        TextFieldWidget searchField = new TextFieldWidget(this.textRenderer, (viewportWidth - searchFieldWidth / 2), 20, searchFieldWidth + 10, 20,
+                Text.translatable("gui.hardcore-revived.player_selector_screen.search")) {
+            @Override
+            public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+                RenderSystem.enableBlend();
+
+                context.setShaderColor(0.8f, 0.8f, 0.8f, 0.8f);
+                context.drawTexture(
+                        Identifier.of("minecraft", "textures/gui/menu_list_background.png"),
+                        this.getX(), this.getY(),
+                        0f, 0f,
+                        this.getWidth(), this.getHeight(), 32, 32);
+                context.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
+
+                if (this.isHovered()) {
+                    context.fill(this.getX(), this.getY(),
+                            this.getX() + this.getWidth(), this.getY() + this.getHeight(),
+                            0x15FFFFFF);
+                }
+
+
+                context.getMatrices().push();
+                context.getMatrices().translate(5, 6.5f, 0);
+
+                super.renderWidget(context, mouseX, mouseY, delta);
+                RenderSystem.disableBlend();
+                context.setShaderColor(1, 1f, 1f, 1f);
+                context.getMatrices().pop();
+            }
+        };
+        searchField.setDrawsBackground(false);
         searchField.setPlaceholder(Text.translatable("gui.hardcore-revived.player_selector_screen.search").formatted(Formatting.DARK_GRAY));
-        searchField.setChangedListener(this::refreshList); // fires on every keystroke
-        searchField.setMaxLength(17);
+        searchField.setChangedListener(this::refreshList);
         this.addDrawableChild(searchField);
-        this.listWidget = new PlayerListWidget(this.client, this.width, this.height - 80, 50, 20);
+
+
+        this.listWidget = new PlayerListWidget(this.client, this.width, this.height - 85, 42, 20);
         this.addSelectableChild(this.listWidget);
         refreshList("");
 
@@ -85,7 +115,7 @@ public class PlayerSelectorScreen extends Screen {
                 panelWidth, panelHeight, 32, 32);
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.disableBlend();
-        context.drawBorder(panelX, panelY, panelWidth, panelHeight, 0xFF373737);
+        context.drawBorder(panelX, panelY, panelWidth, panelHeight, 0x6000000);
     }
 
     @Override
@@ -245,7 +275,7 @@ public class PlayerSelectorScreen extends Screen {
                 /* Called every frame, Also where the text and head texture are actually rendered */
                 @Override
                 protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-                    super.renderWidget(context, mouseX, mouseY, delta);
+                    drawCustomBackground(context);
                     /* Center a div and draw the head */
                     int headSize = this.getHeight() - padding;
                     int headX = this.getX() + padding / 2;
@@ -259,6 +289,27 @@ public class PlayerSelectorScreen extends Screen {
                     int textY = this.getY() + (this.getHeight() - 8) / 2;
                     context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer,
                             isSelf ? this.player.getName() + " (You)" : this.player.getName(), textX, textY, 0xFFFFFF);
+                }
+
+                /* Pretty self-explanatory. It draws the background.. Also handles the hover */
+                private void drawCustomBackground(DrawContext context) {
+                    RenderSystem.enableBlend();
+
+                    context.setShaderColor(0.8f, 0.8f, 0.8f, 0.8f);
+                    context.drawTexture(
+                            Identifier.of("minecraft", "textures/gui/menu_list_background.png"),
+                            this.getX(), this.getY(),
+                            0f, 0f,
+                            ENTRY_WIDTH, 18, 32, 32);
+                    context.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
+
+                    if (this.isHovered()) {
+                        context.fill(this.getX(), this.getY(),
+                                this.getX() + this.getWidth(), this.getY() + this.getHeight(),
+                                0x15FFFFFF);
+                    }
+
+                    RenderSystem.disableBlend();
                 }
             }
 
