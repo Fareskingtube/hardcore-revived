@@ -105,6 +105,7 @@ public class PlayerSelectorScreen extends Screen {
 
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        this.applyBlur(delta);
         RenderSystem.enableBlend();
         context.setShaderColor(1.0f, 1.0f, 1.0f, 0.8f);
         context.drawTexture(
@@ -122,27 +123,17 @@ public class PlayerSelectorScreen extends Screen {
         return false;
     }
 
-    @Override
-    protected void renderDarkening(DrawContext context) {
-
-    }
-
-    @Override
-    protected void applyBlur(float delta) {
-        super.applyBlur(delta);
-    }
-
     private void refreshList(String query) {
         listWidget.clear();
         for (GameProfile p : listedPlayers) {
             String name = p.getName();
             if (query.isEmpty() || name.toLowerCase().contains(query.toLowerCase())) {
                 boolean isSelf = p.getId().equals(self.getId());
-                listWidget.addPlayerEntry(new PlayerListWidget.Entry(p, isSelf, selected -> {
+                listWidget.addPlayerEntry(p, isSelf, selected -> {
                     onSelect.accept(selected);   // <-- output fires here
                     if (client == null) return;
                     this.client.setScreen(null);
-                }));
+                });
             }
         }
     }
@@ -191,15 +182,21 @@ public class PlayerSelectorScreen extends Screen {
         }
 
         /* Adds a new entry */
-        public void addPlayerEntry(Entry entry) {
-            super.addEntry(entry);
+        public void addPlayerEntry(GameProfile player, boolean isSelf, Consumer<GameProfile> onPick) {
+            super.addEntry(new Entry(this, player, isSelf, onPick));
+        }
+
+        private boolean hasScrollbar() {
+            return this.getMaxScroll() > 0;
         }
 
         /* The entry the button is in the list */
         public static class Entry extends ElementListWidget.Entry<Entry> {
             private final ButtonWidget selectButton;
+            private final PlayerListWidget parent;
 
-            public Entry(GameProfile player, boolean isSelf, Consumer<GameProfile> onPick) {
+            public Entry(PlayerListWidget parent, GameProfile player, boolean isSelf, Consumer<GameProfile> onPick) {
+                this.parent = parent;
                 this.selectButton = new PlayerButtonWidget(
                         0,
                         0,
@@ -210,9 +207,12 @@ public class PlayerSelectorScreen extends Screen {
                         button -> onPick.accept(player));
             }
 
+
             /* Renders the entry */
             @Override
             public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+                int width = parent.hasScrollbar() ? entryWidth - PADDING : entryWidth;
+                selectButton.setWidth(width);
                 selectButton.setPosition(x, y);
                 selectButton.render(context, mouseX, mouseY, tickDelta);
             }
@@ -300,7 +300,7 @@ public class PlayerSelectorScreen extends Screen {
                             Identifier.of("minecraft", "textures/gui/menu_list_background.png"),
                             this.getX(), this.getY(),
                             0f, 0f,
-                            ENTRY_WIDTH, 18, 32, 32);
+                            this.getWidth(), 18, 32, 32);
                     context.setShaderColor(1.0f, 1.0f, 1.0f, 1f);
 
                     if (this.isHovered()) {

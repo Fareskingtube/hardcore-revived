@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public record TestPayloadC2S(String name, int value) implements CustomPayload {
     public static final CustomPayload.Id<TestPayloadC2S> ID =
-            new CustomPayload.Id<>(Identifier.of(HardcoreRevived.MOD_ID, "dead_players"));
+            new CustomPayload.Id<>(Identifier.of(HardcoreRevived.MOD_ID, "test_payload"));
 
     public static final PacketCodec<PacketByteBuf, TestPayloadC2S> STREAM_CODEC = PacketCodec.tuple(
             PacketCodecs.STRING,
