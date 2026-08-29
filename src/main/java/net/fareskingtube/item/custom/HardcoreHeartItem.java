@@ -17,12 +17,14 @@ public class HardcoreHeartItem extends HoldActivateItem {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        if (world.isClient() && user instanceof PlayerEntity player) {
+        List<GameProfile> deadPlayers = List.of();
+        if (world.isClient && user instanceof PlayerEntity player) {
             // Code after activation here
             GameProfile profile = new GameProfile(player.getUuid(), player.getNameForScoreboard());
             ModMainClientBridges.OPEN_PLAYER_PICKER.accept(
-                    List.of(profile, profile, profile, profile, profile, profile, profile, profile, profile, profile, profile,
-                            profile, profile, profile, profile, profile, profile), profile);
+                    deadPlayers, profile);
+
+//            ClientPlayNetworking.send(player, new TestPayloadC2S(player.getName().toString(), 1));
         }
         return stack;
     }

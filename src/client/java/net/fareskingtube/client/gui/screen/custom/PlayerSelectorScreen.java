@@ -101,7 +101,6 @@ public class PlayerSelectorScreen extends Screen {
         this.renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         listWidget.render(context, mouseX, mouseY, delta);
-
     }
 
     @Override
@@ -230,6 +229,7 @@ public class PlayerSelectorScreen extends Screen {
             }
 
             /* Renders the button that has a player head and their username */
+
             public static class PlayerButtonWidget extends ButtonWidget {
                 private static final Map<UUID, Identifier> SKIN_CACHE = new HashMap<>();
                 private final boolean isSelf;

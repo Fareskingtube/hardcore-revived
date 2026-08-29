@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fareskingtube.block.entity.ModBlockEntities;
 import net.fareskingtube.client.block.entity.renderer.RevivalAltarBlockEntityRenderer;
 import net.fareskingtube.client.bridge.ModClientBridges;
+import net.fareskingtube.client.networking.ModClientPackets;
 import net.fareskingtube.client.util.ModModelPredicates;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
@@ -15,5 +16,6 @@ public class HardcoreRevivedClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ModBlockEntities.REVIVAL_ALTAR_BE, RevivalAltarBlockEntityRenderer::new);
 
         ModClientBridges.init();
+        ModClientPackets.registerPackets();
     }
 }
