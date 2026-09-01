@@ -29,6 +29,13 @@ public class DeadPlayersState extends PersistentState {
         return deadPlayers.stream().anyMatch(p -> p.getId().equals(uuid));
     }
 
+    public GameProfile getDeadPlayer(UUID uuid) {
+        return deadPlayers.stream()
+                .filter(p -> p.getId().equals(uuid))
+                .findFirst()
+                .orElse(null);
+    }
+
     public void addDeadPlayer(GameProfile profile) {
         if (!isDead(profile.getId())) {
             deadPlayers.add(profile);

@@ -17,5 +17,6 @@ public class HardcoreRevivedClient implements ClientModInitializer {
 
         ModClientBridges.init();
         ModClientPackets.registerPackets();
+
     }
 }

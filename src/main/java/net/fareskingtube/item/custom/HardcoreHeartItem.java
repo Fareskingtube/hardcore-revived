@@ -1,12 +1,17 @@
 package net.fareskingtube.item.custom;
 
+import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fareskingtube.component.ModDataComponentTypes;
 import net.fareskingtube.networking.packet.DeadPlayersPayloadS2C;
 import net.fareskingtube.persistent.DeadPlayersState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
 // TODO: Make duration a config
@@ -43,5 +48,19 @@ public class HardcoreHeartItem extends HoldActivateItem {
             //         profile)));
         }
         return stack;
+    }
+
+    @Override
+    public Text getName(ItemStack stack) {
+        GameProfile selected = stack.get(ModDataComponentTypes.SELECTED_PLAYER);
+        String selectedPlayerName = selected != null ? selected.getName() : null;
+
+        MutableText name = Text.translatable("item.hardcore-revived.hardcore_heart");
+
+        if (selectedPlayerName != null) {
+            name = name.append(Text.literal(" (" + selectedPlayerName + ")").formatted(Formatting.GREEN));
+        }
+
+        return name;
     }
 }

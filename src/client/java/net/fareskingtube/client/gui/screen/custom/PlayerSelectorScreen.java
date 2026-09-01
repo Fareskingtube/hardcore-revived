@@ -11,16 +11,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.util.DefaultSkinHelper;
+import net.minecraft.client.util.SkinTextures;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 public class PlayerSelectorScreen extends Screen {
@@ -105,6 +101,8 @@ public class PlayerSelectorScreen extends Screen {
 
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        // TODO: Add Blur and Darkening to the config
+        this.renderDarkening(context);
         this.applyBlur(delta);
         RenderSystem.enableBlend();
         context.setShaderColor(1.0f, 1.0f, 1.0f, 0.8f);
@@ -231,7 +229,6 @@ public class PlayerSelectorScreen extends Screen {
             /* Renders the button that has a player head and their username */
 
             public static class PlayerButtonWidget extends ButtonWidget {
-                private static final Map<UUID, Identifier> SKIN_CACHE = new HashMap<>();
                 private final boolean isSelf;
                 private final GameProfile player;
 
@@ -242,33 +239,6 @@ public class PlayerSelectorScreen extends Screen {
                     this.isSelf = isSelf;
                 }
 
-                /* Gets Player skin anc caches it */
-                private static Identifier resolveSkin(GameProfile profile) {
-                    UUID uuid = profile.getId();
-
-                    Identifier cached = SKIN_CACHE.get(uuid);
-                    if (cached != null) return cached;
-
-                    var networkHandler = MinecraftClient.getInstance().getNetworkHandler();
-                    if (networkHandler != null) {
-                        PlayerListEntry entry = networkHandler.getPlayerListEntry(uuid);
-                        if (entry != null) {
-                            Identifier texture = entry.getSkinTextures().texture();
-                            SKIN_CACHE.put(uuid, texture);
-                            return texture;
-                        }
-                    }
-
-                    Identifier fallback = DefaultSkinHelper.getSkinTextures(uuid).texture();
-                    SKIN_CACHE.put(uuid, fallback);
-
-                    MinecraftClient.getInstance().getSkinProvider().fetchSkinTextures(profile)
-                            .thenAcceptAsync(skinTextures -> SKIN_CACHE.put(uuid, skinTextures.texture()),
-                                    MinecraftClient.getInstance())
-                            .exceptionally(throwable -> null);
-
-                    return fallback;
-                }
 
                 int padding = 8;
 
@@ -281,8 +251,12 @@ public class PlayerSelectorScreen extends Screen {
                     int headX = this.getX() + padding / 2;
                     int headY = this.getY() + padding / 2;
 
-                    Identifier skinTexture = resolveSkin(player);
-                    PlayerSkinDrawer.draw(context, skinTexture, headX, headY, headSize);
+                    SkinTextures textures = MinecraftClient.getInstance()
+                            .getSkinProvider()
+                            .getSkinTextures(player);
+                    Identifier skin = textures.texture();
+
+                    PlayerSkinDrawer.draw(context, skin, headX, headY, headSize);
 
                     /* Draw text */
                     int textX = headX + headSize + 4;
