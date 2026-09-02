@@ -127,6 +127,7 @@ public class PlayerSelectorScreen extends Screen {
             String name = p.getName();
             if (query.isEmpty() || name.toLowerCase().contains(query.toLowerCase())) {
                 boolean isSelf = p.getId().equals(self.getId());
+                if (isSelf) continue;
                 listWidget.addPlayerEntry(p, isSelf, selected -> {
                     onSelect.accept(selected);   // <-- output fires here
                     if (client == null) return;

@@ -96,9 +96,10 @@ public class RevivalAltarBlock extends BlockWithEntity implements BlockEntityPro
     protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof RevivalAltarBlockEntity) {
-                ItemScatterer.spawn(world, pos, ((RevivalAltarBlockEntity) blockEntity));
+            if (blockEntity instanceof RevivalAltarBlockEntity revivalAltarBlockEntity) {
+                ItemScatterer.spawn(world, pos, (revivalAltarBlockEntity));
                 world.updateComparators(pos, this);
+                revivalAltarBlockEntity.removeQueuedPlayer();
             }
             super.onStateReplaced(state, world, pos, newState, moved);
         }
@@ -117,6 +118,7 @@ public class RevivalAltarBlock extends BlockWithEntity implements BlockEntityPro
                     stack.decrement(1);
 
                     revivalAltarBlockEntity.markDirty();
+                    revivalAltarBlockEntity.queuePlayerRevival();
                 }
 
                 return ItemActionResult.SUCCESS;
@@ -128,6 +130,7 @@ public class RevivalAltarBlock extends BlockWithEntity implements BlockEntityPro
                     revivalAltarBlockEntity.setStack(0, ItemStack.EMPTY);
 
                     revivalAltarBlockEntity.markDirty();
+                    revivalAltarBlockEntity.removeQueuedPlayer();
                 }
 
                 return ItemActionResult.SUCCESS;
