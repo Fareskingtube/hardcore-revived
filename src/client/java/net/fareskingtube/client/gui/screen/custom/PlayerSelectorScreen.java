@@ -2,6 +2,7 @@ package net.fareskingtube.client.gui.screen.custom;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fareskingtube.client.util.PlayerProfileTextureCache;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
@@ -11,12 +12,14 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.SkinTextures;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class PlayerSelectorScreen extends Screen {
@@ -127,9 +130,9 @@ public class PlayerSelectorScreen extends Screen {
             String name = p.getName();
             if (query.isEmpty() || name.toLowerCase().contains(query.toLowerCase())) {
                 boolean isSelf = p.getId().equals(self.getId());
-                if (isSelf) continue;
+                // if (isSelf) continue;
                 listWidget.addPlayerEntry(p, isSelf, selected -> {
-                    onSelect.accept(selected);   // <-- output fires here
+                    onSelect.accept(selected);
                     if (client == null) return;
                     this.client.setScreen(null);
                 });
@@ -156,6 +159,23 @@ public class PlayerSelectorScreen extends Screen {
         @Override
         protected void drawHeaderAndFooterSeparators(DrawContext context) {
 
+        }
+
+        @Override
+        public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+            if (this.children().isEmpty()) {
+                int centerX = this.getRowLeft() + this.getRowWidth() / 2;
+                int centerY = this.getY() + this.getHeight() / 2 - PADDING * 2 + PADDING / 2;
+
+                context.drawCenteredTextWithShadow(
+                        this.client.textRenderer,
+                        Text.translatable("gui.hardcore-revived.player_selector_screen.no_players"),
+                        centerX,
+                        centerY,
+                        0xAAAAAA
+                );
+            }
+            super.renderWidget(context, mouseX, mouseY, delta);
         }
 
         /* Centering a div */
@@ -243,6 +263,33 @@ public class PlayerSelectorScreen extends Screen {
 
                 int padding = 8;
 
+                private static final Map<UUID, Identifier> SKIN_CACHE = new HashMap<>();
+                private static final Set<UUID> PENDING_FETCHES = new HashSet<>();
+
+                private static Identifier resolveSkin(GameProfile profile) {
+                    UUID id = profile.getId();
+
+                    if (SKIN_CACHE.containsKey(id)) {
+                        return SKIN_CACHE.get(id); // cache hit - render immediately
+                    }
+
+                    if (!PENDING_FETCHES.contains(id)) {
+                        PENDING_FETCHES.add(id);
+
+                        MinecraftClient.getInstance()
+                                .getSkinProvider() // verify exact accessor via autocomplete
+                                .fetchSkinTextures(profile)
+                                .thenAcceptAsync(skinTextures -> {
+                                    SKIN_CACHE.put(id, skinTextures.texture());
+                                    PENDING_FETCHES.remove(id);
+                                    // no explicit "refresh" call needed - next render() picks it up
+                                }, MinecraftClient.getInstance()); // <- executor param is the key bit
+                    }
+
+                    // this frame: fall back while the fetch is in flight
+                    return DefaultSkinHelper.getSkinTextures(id).texture();
+                }
+
                 /* Called every frame, Also where the text and head texture are actually rendered */
                 @Override
                 protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -252,12 +299,17 @@ public class PlayerSelectorScreen extends Screen {
                     int headX = this.getX() + padding / 2;
                     int headY = this.getY() + padding / 2;
 
-                    SkinTextures textures = MinecraftClient.getInstance()
-                            .getSkinProvider()
-                            .getSkinTextures(player);
-                    Identifier skin = textures.texture();
+                    GameProfile profileToRender = PlayerProfileTextureCache.resolve(this.player);
 
-                    PlayerSkinDrawer.draw(context, skin, headX, headY, headSize);
+                    CompletableFuture<SkinTextures> skinFuture = MinecraftClient.getInstance()
+                            .getSkinProvider()
+                            .fetchSkinTextures(profileToRender);
+
+                    SkinTextures textures = skinFuture.getNow(
+                            MinecraftClient.getInstance().getSkinProvider().getSkinTextures(profileToRender)
+                    );
+
+                    PlayerSkinDrawer.draw(context, textures, headX, headY, headSize);
 
                     /* Draw text */
                     int textX = headX + headSize + 4;

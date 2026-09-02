@@ -7,6 +7,7 @@ import net.fareskingtube.block.entity.TickableBlockEntity;
 import net.fareskingtube.component.ModDataComponentTypes;
 import net.fareskingtube.item.ModItems;
 import net.fareskingtube.multiblock.ModMultiblocks;
+import net.fareskingtube.persistent.DeadPlayersState;
 import net.fareskingtube.persistent.QueuedPlayer;
 import net.fareskingtube.persistent.RevivalQueueState;
 import net.minecraft.block.Block;
@@ -220,6 +221,7 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
                         0.1
                 );
             }
+            DeadPlayersState.get(server).removeDeadPlayer(player.getUuid());
             state.removeQueuedPlayer(player.getUuid(), this.getPos(), world.getRegistryKey());
         }
     }
