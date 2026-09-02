@@ -12,13 +12,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.SkinTextures;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -262,33 +261,6 @@ public class PlayerSelectorScreen extends Screen {
 
 
                 int padding = 8;
-
-                private static final Map<UUID, Identifier> SKIN_CACHE = new HashMap<>();
-                private static final Set<UUID> PENDING_FETCHES = new HashSet<>();
-
-                private static Identifier resolveSkin(GameProfile profile) {
-                    UUID id = profile.getId();
-
-                    if (SKIN_CACHE.containsKey(id)) {
-                        return SKIN_CACHE.get(id); // cache hit - render immediately
-                    }
-
-                    if (!PENDING_FETCHES.contains(id)) {
-                        PENDING_FETCHES.add(id);
-
-                        MinecraftClient.getInstance()
-                                .getSkinProvider() // verify exact accessor via autocomplete
-                                .fetchSkinTextures(profile)
-                                .thenAcceptAsync(skinTextures -> {
-                                    SKIN_CACHE.put(id, skinTextures.texture());
-                                    PENDING_FETCHES.remove(id);
-                                    // no explicit "refresh" call needed - next render() picks it up
-                                }, MinecraftClient.getInstance()); // <- executor param is the key bit
-                    }
-
-                    // this frame: fall back while the fetch is in flight
-                    return DefaultSkinHelper.getSkinTextures(id).texture();
-                }
 
                 /* Called every frame, Also where the text and head texture are actually rendered */
                 @Override
