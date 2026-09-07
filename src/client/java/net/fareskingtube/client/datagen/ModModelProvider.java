@@ -21,6 +21,8 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.HARDCORE_HEART, Models.GENERATED);
+        itemModelGenerator.register(ModItems.BUTCHER_KNIFE, Models.GENERATED);
         itemModelGenerator.register(ModItems.HEART_EXTRACTOR, Models.GENERATED);
+        itemModelGenerator.register(ModItems.BLOOD, Models.GENERATED);
     }
 }

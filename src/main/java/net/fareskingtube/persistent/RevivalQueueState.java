@@ -87,7 +87,6 @@ public class RevivalQueueState extends PersistentState {
         return nbt;
     }
 
-
     private GameProfile profileFromNbt(NbtCompound nbt) {
         UUID id = nbt.getUuid("Id");
         String name = nbt.contains("Name") ? nbt.getString("Name") : "";
@@ -129,6 +128,7 @@ public class RevivalQueueState extends PersistentState {
         return state;
     }
 
+    // TODO: Wrap all NBT write and get in try catch
     public static RevivalQueueState get(MinecraftServer server) {
         PersistentStateManager manager = server.getOverworld().getPersistentStateManager();
         return manager.getOrCreate(TYPE, HardcoreRevived.MOD_ID + "_queued_players");

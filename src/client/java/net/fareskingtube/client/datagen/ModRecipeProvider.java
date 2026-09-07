@@ -7,6 +7,7 @@ import net.fareskingtube.item.ModItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
@@ -46,7 +47,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .input('S', Items.STICK)
                 .criterion(hasItem(Items.STICK), conditionsFromItem(ModItems.HEART_EXTRACTOR))
                 .offerTo(exporter);
-        //  TODO: Change this recipe to an item that drops blood from damaging mobs or from extracting your own blood
-        offer2x2CompactingRecipe(exporter, RecipeCategory.MISC, ModBlocks.BLOOD_BLOCK, Blocks.REDSTONE_BLOCK);
+
+        // Butcher Knife Recipe
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ModItems.BUTCHER_KNIFE)
+                .pattern("I ")
+                .pattern(" S")
+                .input('I', Items.IRON_INGOT)
+                .input('S', Items.STICK)
+                .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(ModItems.BUTCHER_KNIFE))
+                .offerTo(exporter);
+
+        // Blood Recipe
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLOOD_BLOCK)
+                .input(ModItems.BLOOD, 4)
+                .criterion(hasItem(ModItems.BLOOD), conditionsFromItem(ModBlocks.BLOOD_BLOCK))
+                .offerTo(exporter);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModItems.BLOOD, 4)
+                .input(ModBlocks.BLOOD_BLOCK)
+                .criterion(hasItem(ModBlocks.BLOOD_BLOCK), conditionsFromItem(ModItems.BLOOD))
+                .offerTo(exporter);
+
     }
 }

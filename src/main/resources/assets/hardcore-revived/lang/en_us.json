@@ -2,13 +2,21 @@
   "gui.hardcore-revived.player_selector_screen.title": "Select a player",
   "gui.hardcore-revived.player_selector_screen.search": "Search for a player...",
   "gui.hardcore-revived.player_selector_screen.no_players": "No Players Found",
+
+  "misc.hardcore-revived.player_kill_warn": "Killing a player may result in \"Punishment\" ",
+  "misc.hardcore-revived.player_kill": "Punishment be upon you",
+
+  "item.hardcore-revived.butcher_knife": "Butcher Knife",
   "item.hardcore-revived.hardcore_heart": "Hardcore Heart",
   "item.hardcore-revived.heart_extractor": "Heart Extractor",
   "item.hardcore-revived.heart_injector.empty": "Empty Heart Injector",
   "item.hardcore-revived.heart_injector.filled": "Filled Heart Injector",
   "item.hardcore-revived.resuscitatio_mortuorum.name": "Resuscitatio Mortuorum",
   "item.hardcore-revived.resuscitatio_mortuorum.landing_text": "A book that explains everything about §4reviving §4the §4dead",
+  "item.hardcore-revived.blood": "Blood",
+
   "block.hardcore-revived.revival_altar": "Revival Altar",
   "block.hardcore-revived.blood_block": "Blood Block",
+
   "itemGroup.hardcore-revived.hardcore_revived_group": "Hardcore Revived"
 }

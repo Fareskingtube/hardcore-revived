@@ -15,6 +15,8 @@ heart in it.
 
 The Revival Altar is the center of this mod it has 2 main functions:
 
+[//]: # (TODO: Edit README.md to reflect the new revival system)
+
 1. It passively gives you regeneration while within its range.
 2. Allows you to revive your friends by placing a heart in it then getting your friend who's in spectator mode within
    its range.
@@ -57,13 +59,21 @@ requires [Fabric API](https://github.com/FabricMC/fabric-api).
 
 ## Dependencies
 
-These are mods you have to have in your `mods/` folder for the mod to work correctly:
+These are mods you must have in your `mods/` folder for the mod to work correctly:
+
+[//]: # (TODO: Add diffrent links based on the platform)
 
 * [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api/)
   Version [0.116.12+1.21.1](https://www.curseforge.com/minecraft/mc-mods/fabric-api/files/8073321) or higher.
 * [Patchouli (Fabric)](https://www.curseforge.com/minecraft/mc-mods/patchouli-fabric)
   Version [1.21.1-93](https://www.curseforge.com/minecraft/mc-mods/patchouli-fabric/files/7730941) or higher.
-* [JEI](https://www.curseforge.com/minecraft/mc-mods/jei) (Optional but useful for seeing recipes).
+* [YACL](https://www.curseforge.com/minecraft/mc-mods/yacl)
+  Version [3.8.2](https://www.curseforge.com/minecraft/mc-mods/yacl/files/7437855) or higher.
+
+## Integration
+
+* [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) Adds a mods list screen and a screen to edit the
+  config in game.
 
 ## Incompatibility
 
@@ -89,18 +99,22 @@ installation.
 AI was usage was mostly limited to debugging and explaining some concepts/finding documentation since up-to-date
 documentation for mod development is fairly limited.
 
-The known places where generative was used to write code:
+The **known** places where generative was used to write code:
 
-1. Spawning particle methods in `src/main/java/net/fareskingtube/block/entity/custom/RevivalAltarBlockentity`
+1. Spawning particle methods at `RevivalAltarBlockentity.java`
+2. Fetching and Caching offline player skins at
+   `client/PlayerProfileTextureCache.java`
+3. Small help with styling (Centering a div) at `client/PlayerSelectorScreen.java`
+
+**Note:** Any "borrowed" code has its source above it.
 
 # Credits
 
 ## Authors
 
-1. [![](https://minotar.net/helm/d6313fc2-7814-4de1-8326-a468c509d038/15)](https://namemc.com/profile/d6313fc2-7814-4de1-8326-a468c509d038)
-   [Fareskingtube](https://github.com/Fareskingtube) (
-   Main & Only Dev,
-   Main Artist, 3D Artist, Builder, etc.)
+1. **[![](https://minotar.net/helm/d6313fc2-7814-4de1-8326-a468c509d038/15)](https://namemc.com/profile/d6313fc2-7814-4de1-8326-a468c509d038)[Fareskingtube](https://github.com/Fareskingtube) (
+   Main & Only Dev, Main Artist, 3D Artist, Builder, etc.)**
+
 2. [![](https://minotar.net/helm/ec20c236-b99c-4d42-a633-dedcc41c4f94/15)](https://namemc.com/profile/ec20c236-b99c-4d42-a633-dedcc41c4f94)
    [Itsbluefire_](https://namemc.com/profile/ec20c236-b99c-4d42-a633-dedcc41c4f94) (Builder)
 3. [![](https://minotar.net/helm/33e2ca4f-ba29-4dd3-b9f2-092a8a13ba21/15)](https://namemc.com/profile/33e2ca4f-ba29-4dd3-b9f2-092a8a13ba21)
@@ -121,12 +135,17 @@ The assets above are temporary and for testing proposes only.
 
 * **Blood Block** texture was taken and scaled up
   from [unused-textures](https://github.com/malcolmriley/unused-textures/blob/master/blocks/cheese_waxed_bottom.png)
-  under the [CC-BY-4.0 License](https://github.com/malcolmriley/unused-textures/blob/master/LICENSE)
+  under the [CC-BY-4.0 License](https://github.com/malcolmriley/unused-textures/blob/master/LICENSE) (Also used for
+  the altar)
 
 Any other assets were made entirely by the [authors](#authors).
 
 # Modpack Policy
 
-You're allowed to use this mod in your modpack. You don't have to ask permission.
+**You're allowed to use this mod in your modpack. You don't have to ask permission.**
+
+[//]: # (TODO: Add Discord Link)
+Although I would be interested in knowing what you're making. Take a look at the [discord]() if you need my help or
+want to show me your projects.
 
 

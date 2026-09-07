@@ -28,6 +28,9 @@
     ],
     "fabric-datagen": [
       "net.fareskingtube.client.HardcoreRevivedDataGenerator"
+    ],
+    "modmenu": [
+      "net.fareskingtube.client.config.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -42,6 +45,10 @@
     "minecraft": "~1.21.1",
     "java": ">=21",
     "fabric-api": "*",
-    "patchouli": ">=1.21.1-93-FABRIC"
+    "patchouli": ">=1.21.1-93-FABRIC",
+    "yet_another_config_lib_v3": ">=3.8.2+1.21.1-fabric"
+  },
+  "suggests": {
+    "modmenu": ">=11.0.4"
   }
 }

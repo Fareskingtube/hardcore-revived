@@ -15,6 +15,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
 // TODO: Make duration a config
+//  Make HardcoreHeartItem spawn in ancient city chests
 public class HardcoreHeartItem extends HoldActivateItem {
     public HardcoreHeartItem(Settings settings) {
         super(settings, 20);

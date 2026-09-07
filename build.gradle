@@ -13,6 +13,16 @@ repositories {
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
     maven { url 'https://maven.blamejared.com' }
+
+    maven {
+        name 'Xander Maven'
+        url 'https://maven.isxander.dev/releases'
+    }
+
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
 }
 
 loom {
@@ -42,7 +52,14 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_api_version}"
+    // Patchouli. Used for the guide book and making the multiblock.
+    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+
+    // Yet Another Config Lib. Used to make the configs.
+    modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
+
+    // Mod Menu. The mod that shows the list of mods and their configs for fabric
+    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
 processResources {

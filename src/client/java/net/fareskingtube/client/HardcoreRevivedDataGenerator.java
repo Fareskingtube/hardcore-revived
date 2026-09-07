@@ -2,10 +2,7 @@ package net.fareskingtube.client;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fareskingtube.client.datagen.ModBlockTagProvider;
-import net.fareskingtube.client.datagen.ModLootTableProvider;
-import net.fareskingtube.client.datagen.ModModelProvider;
-import net.fareskingtube.client.datagen.ModRecipeProvider;
+import net.fareskingtube.client.datagen.*;
 
 public class HardcoreRevivedDataGenerator implements DataGeneratorEntrypoint {
     @Override
@@ -16,5 +13,6 @@ public class HardcoreRevivedDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ModModelProvider::new);
         pack.addProvider(ModRecipeProvider::new);
         pack.addProvider(ModBlockTagProvider::new);
+        pack.addProvider(ModItemTagProvider::new);
     }
 }

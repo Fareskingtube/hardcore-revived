@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_redstone_block": {
+    "has_blood": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:redstone_block"
+            "items": "hardcore-revived:blood_block"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_redstone_block"
+      "has_blood"
     ]
   ],
   "rewards": {

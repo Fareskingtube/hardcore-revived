@@ -16,6 +16,7 @@ import net.minecraft.client.util.SkinTextures;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -39,10 +40,34 @@ public class PlayerSelectorScreen extends Screen {
     protected void init() {
         super.init();
 
+        TextFieldWidget searchField = getSearchFieldWidget();
+        searchField.setDrawsBackground(false);
+        searchField.setPlaceholder(Text.translatable("gui.hardcore-revived.player_selector_screen.search").formatted(Formatting.DARK_GRAY));
+        searchField.setChangedListener(this::refreshList);
+        this.addDrawableChild(searchField);
+
+
+        this.listWidget = new PlayerListWidget(this.client, this.width, this.height - 85, 42, 20);
+        this.addSelectableChild(this.listWidget);
+        refreshList("");
+
+        // SCGF (Small Claude Generated Function) IDER what this does
+        int padding = 5;
+        this.panelX = Math.min(searchField.getX(), this.listWidget.getRowLeft()) - padding;
+        this.panelY = searchField.getY() - padding;
+        int right = Math.max(searchField.getX() + searchField.getWidth(),
+                this.listWidget.getRowLeft() + this.listWidget.getRowWidth()) + padding;
+        int bottom = this.listWidget.getY() + this.listWidget.getHeight() + padding;
+        this.panelWidth = right - this.panelX;
+        this.panelHeight = bottom - this.panelY;
+    }
+
+    /* The Search field widget with custom styling */
+    private @NotNull TextFieldWidget getSearchFieldWidget() {
         int viewportWidth = this.width / 2;
 
         int searchFieldWidth = 175;
-        TextFieldWidget searchField = new TextFieldWidget(this.textRenderer, (viewportWidth - searchFieldWidth / 2), 20, searchFieldWidth + 10, 20,
+        return new TextFieldWidget(PlayerSelectorScreen.this.textRenderer, (viewportWidth - searchFieldWidth / 2), 20, searchFieldWidth + 10, 20,
                 Text.translatable("gui.hardcore-revived.player_selector_screen.search")) {
             @Override
             public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -72,25 +97,6 @@ public class PlayerSelectorScreen extends Screen {
                 context.getMatrices().pop();
             }
         };
-        searchField.setDrawsBackground(false);
-        searchField.setPlaceholder(Text.translatable("gui.hardcore-revived.player_selector_screen.search").formatted(Formatting.DARK_GRAY));
-        searchField.setChangedListener(this::refreshList);
-        this.addDrawableChild(searchField);
-
-
-        this.listWidget = new PlayerListWidget(this.client, this.width, this.height - 85, 42, 20);
-        this.addSelectableChild(this.listWidget);
-        refreshList("");
-
-//        SCGF
-        int padding = 5;
-        this.panelX = Math.min(searchField.getX(), this.listWidget.getRowLeft()) - padding;
-        this.panelY = searchField.getY() - padding;
-        int right = Math.max(searchField.getX() + searchField.getWidth(),
-                this.listWidget.getRowLeft() + this.listWidget.getRowWidth()) + padding;
-        int bottom = this.listWidget.getY() + this.listWidget.getHeight() + padding;
-        this.panelWidth = right - this.panelX;
-        this.panelHeight = bottom - this.panelY;
     }
 
 
@@ -123,12 +129,14 @@ public class PlayerSelectorScreen extends Screen {
         return false;
     }
 
+    /* Takes the search query and shows matching players */
     private void refreshList(String query) {
         listWidget.clear();
         for (GameProfile p : listedPlayers) {
             String name = p.getName();
             if (query.isEmpty() || name.toLowerCase().contains(query.toLowerCase())) {
                 boolean isSelf = p.getId().equals(self.getId());
+                // TODO: Uncomment after after testing
                 // if (isSelf) continue;
                 listWidget.addPlayerEntry(p, isSelf, selected -> {
                     onSelect.accept(selected);
@@ -151,7 +159,7 @@ public class PlayerSelectorScreen extends Screen {
         /* Disables the black background when opening the menu */
         @Override
         protected void drawMenuListBackground(DrawContext context) {
-//            super.drawMenuListBackground(context);
+            // super.drawMenuListBackground(context);
         }
 
         /* Disables the header and footer borders */
@@ -248,6 +256,7 @@ public class PlayerSelectorScreen extends Screen {
 
             /* Renders the button that has a player head and their username */
 
+            // TODO: Add try catch to clicking the button
             public static class PlayerButtonWidget extends ButtonWidget {
                 private final boolean isSelf;
                 private final GameProfile player;
@@ -277,6 +286,7 @@ public class PlayerSelectorScreen extends Screen {
                             .getSkinProvider()
                             .fetchSkinTextures(profileToRender);
 
+                    // TODO: Add try catch
                     SkinTextures textures = skinFuture.getNow(
                             MinecraftClient.getInstance().getSkinProvider().getSkinTextures(profileToRender)
                     );
