@@ -1,4 +1,24 @@
 {
+  "config.hardcore-revived.title": "Hardcore Revived Config",
+
+  "config.hardcore-revived.category.client": "Client",
+  "config.hardcore-revived.category.description.client": "Client only config",
+  "config.hardcore-revived.category.common": "Common",
+  "config.hardcore-revived.category.description.common": "Server and client config. Might not apply if you're on a public server or require a restart",
+
+  "config.hardcore-revived.group.player_selection_screen": "Player Selection Screen",
+  "config.hardcore-revived.group.description.player_selection_screen": "The screen that appears when using the hardcore heart",
+
+  "config.hardcore-revived.option.apply_darkening": "Background Darkening",
+  "config.hardcore-revived.option.description.apply_darkening": "Whether the player selection screen has a dark transparent background",
+  "config.hardcore-revived.option.apply_blur": "Background Blur",
+  "config.hardcore-revived.option.description.apply_blur": "Whether the player selection screen has a blur on the background",
+
+  "config.hardcore-revived.group.items": "Items",
+
+  "config.hardcore-revived.option.heartActivationTime": "Heart Activation Time",
+  "config.hardcore-revived.option.description.heartActivationTime": "The time it takes to open the player selector screen from using the heart.",
+
   "gui.hardcore-revived.player_selector_screen.title": "Select a player",
   "gui.hardcore-revived.player_selector_screen.search": "Search for a player...",
   "gui.hardcore-revived.player_selector_screen.no_players": "No Players Found",

@@ -3,6 +3,7 @@ package net.fareskingtube.item.custom;
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fareskingtube.component.ModDataComponentTypes;
+import net.fareskingtube.config.CommonConfig;
 import net.fareskingtube.networking.packet.DeadPlayersPayloadS2C;
 import net.fareskingtube.persistent.DeadPlayersState;
 import net.minecraft.entity.LivingEntity;
@@ -17,8 +18,13 @@ import net.minecraft.world.World;
 // TODO: Make duration a config
 //  Make HardcoreHeartItem spawn in ancient city chests
 public class HardcoreHeartItem extends HoldActivateItem {
+
     public HardcoreHeartItem(Settings settings) {
-        super(settings, 20);
+        super(settings, getHeartActivationTime());
+    }
+
+    private static int getHeartActivationTime() {
+        return Math.max(CommonConfig.HANDLER.instance().heartActivationTime, 1);
     }
 
     @Override

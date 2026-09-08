@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 // SCGF (Small Claude Generated Function)
+// But I now understand how it works
 public final class PlayerProfileTextureCache {
     private static final Map<UUID, GameProfile> FILLED = new HashMap<>();
     private static final Set<UUID> PENDING = new HashSet<>();

@@ -2,6 +2,7 @@ package net.fareskingtube.client.gui.screen.custom;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fareskingtube.client.config.ClientConfig;
 import net.fareskingtube.client.util.PlayerProfileTextureCache;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -28,6 +29,8 @@ public class PlayerSelectorScreen extends Screen {
     private final Consumer<GameProfile> onSelect;
     private PlayerListWidget listWidget;
     private int panelX, panelY, panelWidth, panelHeight;
+    private boolean blurEnabled;
+    private boolean darkenEnabled;
 
     public PlayerSelectorScreen(List<GameProfile> listedPlayers, GameProfile self, Consumer<GameProfile> onSelect) {
         super(Text.translatable("gui.hardcore-revived.player_selector_screen.title"));
@@ -60,6 +63,11 @@ public class PlayerSelectorScreen extends Screen {
         int bottom = this.listWidget.getY() + this.listWidget.getHeight() + padding;
         this.panelWidth = right - this.panelX;
         this.panelHeight = bottom - this.panelY;
+
+        // Apply blur and darkening based on config
+        var config = ClientConfig.HANDLER.instance();
+        this.darkenEnabled = config.isApplyDarkening;
+        this.blurEnabled = config.isApplyBlur;
     }
 
     /* The Search field widget with custom styling */
@@ -109,9 +117,9 @@ public class PlayerSelectorScreen extends Screen {
 
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        // TODO: Add Blur and Darkening to the config
-        this.renderDarkening(context);
-        this.applyBlur(delta);
+        if (darkenEnabled) this.renderDarkening(context);
+        if (blurEnabled) this.applyBlur(delta);
+
         RenderSystem.enableBlend();
         context.setShaderColor(1.0f, 1.0f, 1.0f, 0.8f);
         context.drawTexture(
@@ -255,8 +263,6 @@ public class PlayerSelectorScreen extends Screen {
             }
 
             /* Renders the button that has a player head and their username */
-
-            // TODO: Add try catch to clicking the button
             public static class PlayerButtonWidget extends ButtonWidget {
                 private final boolean isSelf;
                 private final GameProfile player;
@@ -280,13 +286,13 @@ public class PlayerSelectorScreen extends Screen {
                     int headX = this.getX() + padding / 2;
                     int headY = this.getY() + padding / 2;
 
+                    /* Getting the player's skin texture */
                     GameProfile profileToRender = PlayerProfileTextureCache.resolve(this.player);
 
                     CompletableFuture<SkinTextures> skinFuture = MinecraftClient.getInstance()
                             .getSkinProvider()
                             .fetchSkinTextures(profileToRender);
 
-                    // TODO: Add try catch
                     SkinTextures textures = skinFuture.getNow(
                             MinecraftClient.getInstance().getSkinProvider().getSkinTextures(profileToRender)
                     );

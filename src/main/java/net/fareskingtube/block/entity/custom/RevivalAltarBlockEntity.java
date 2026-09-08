@@ -80,7 +80,7 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
         }
     }
 
-    //    Claude made most of both of those particle spawning methods
+    // Claude made most of both of those particle spawning methods (SCGF: Small Calude Generated Function)
     private void spawnParticles(World world) {
         if (this.ticks % 4 != 0) return; // every 2 ticks for density
 

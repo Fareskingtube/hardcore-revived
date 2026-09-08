@@ -7,6 +7,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 
+// Not used just exists for future reference
 public record TestPayloadC2S(String name, int value) implements CustomPayload {
     public static final CustomPayload.Id<TestPayloadC2S> ID =
             new CustomPayload.Id<>(Identifier.of(HardcoreRevived.MOD_ID, "test_payload"));

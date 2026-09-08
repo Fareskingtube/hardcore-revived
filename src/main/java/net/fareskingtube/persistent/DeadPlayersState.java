@@ -83,7 +83,11 @@ public class DeadPlayersState extends PersistentState {
         DeadPlayersState state = new DeadPlayersState();
         NbtList list = nbt.getList("DeadPlayers", NbtElement.COMPOUND_TYPE);
         for (NbtElement element : list) {
-            state.deadPlayers.add(state.profileFromNbt((NbtCompound) element));
+            try {
+                state.deadPlayers.add(state.profileFromNbt((NbtCompound) element));
+            } catch (Exception err) {
+                HardcoreRevived.LOGGER.warn("Skipping corrupted dead player entry", err);
+            }
         }
         return state;
     }

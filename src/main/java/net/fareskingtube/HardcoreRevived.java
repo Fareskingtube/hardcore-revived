@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fareskingtube.block.entity.ModBlockEntities;
 import net.fareskingtube.block.entity.custom.RevivalAltarBlockEntity;
 import net.fareskingtube.component.ModDataComponentTypes;
+import net.fareskingtube.config.CommonConfig;
 import net.fareskingtube.item.ModItemGroup;
 import net.fareskingtube.item.ModItems;
 import net.fareskingtube.multiblock.ModMultiblocks;
@@ -39,12 +40,16 @@ public class HardcoreRevived implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Loading...");
 
+        // Loading default common config to disk
+        CommonConfig.load();
+
         ModItems.registerModItems();
         ModItemGroup.registerItemGroups();
         ModDataComponentTypes.registerDataComponentTypes();
         ModBlockEntities.registerBlockEntities();
         ModMultiblocks.registerModMultiBlocks();
         ModPackets.registerPackets();
+
 
         // On player death
         ServerLivingEntityEvents.AFTER_DEATH.register((livingEntity, damageSource) -> {
@@ -80,6 +85,7 @@ public class HardcoreRevived implements ModInitializer {
             }
         });
 
+        // TODO: Add config to hearts taken from killer or respawn victim
         // On killing a player
         ServerLivingEntityEvents.AFTER_DEATH.register((livingEntity, damageSource) -> {
             if (damageSource.getAttacker() instanceof ServerPlayerEntity killer) {

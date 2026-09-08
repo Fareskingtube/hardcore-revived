@@ -16,6 +16,7 @@ import net.minecraft.util.Hand;
 
 // Runs ON SERVER on receive
 public class ServerboundPackets {
+    // Handles when a player is selected from a hardcore heart by a client
     public static void handlePlayerSelectionPayload(PlayerSelectionPayloadC2S playerSelectionPayloadC2S, ServerPlayNetworking.Context context) {
         ServerPlayerEntity player = context.player();
         MinecraftServer server = context.server();

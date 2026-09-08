@@ -123,12 +123,15 @@ public class RevivalQueueState extends PersistentState {
         RevivalQueueState state = new RevivalQueueState();
         NbtList list = nbt.getList("QueuedPlayers", NbtElement.COMPOUND_TYPE);
         for (NbtElement element : list) {
-            state.queuedPlayers.add(state.queuedPlayerFromNbt((NbtCompound) element));
+            try {
+                state.queuedPlayers.add(state.queuedPlayerFromNbt((NbtCompound) element));
+            } catch (Exception err) {
+                HardcoreRevived.LOGGER.warn("Skipping corrupted queued player revival entry", err);
+            }
         }
         return state;
     }
 
-    // TODO: Wrap all NBT write and get in try catch
     public static RevivalQueueState get(MinecraftServer server) {
         PersistentStateManager manager = server.getOverworld().getPersistentStateManager();
         return manager.getOrCreate(TYPE, HardcoreRevived.MOD_ID + "_queued_players");
