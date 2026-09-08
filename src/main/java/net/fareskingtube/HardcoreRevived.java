@@ -99,6 +99,7 @@ public class HardcoreRevived implements ModInitializer {
                         maxHealth.setBaseValue(maxHealth.getValue() - 4);
                     }
                 }
+                //
                 if (livingEntity instanceof PassiveEntity victim && killer.getMainHandStack().getItem() == ModItems.BUTCHER_KNIFE) {
                     int count = victim.getRandom().nextBetween(1, 3);
                     ItemScatterer.spawn(
