@@ -45,6 +45,7 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private boolean isMultiblock = false;
     private int ticks = 0;
+    private float prevRotation = 0;
     private float rotation = 0;
 
     public RevivalAltarBlockEntity(BlockPos pos, BlockState state) {
@@ -55,6 +56,8 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
     @Override
     public void tick() {
         if (this.getWorld() == null) return;
+        this.prevRotation = this.rotation;
+        this.rotation = this.rotation + 5f % 360f;
 
         World world = this.getWorld();
 
@@ -268,12 +271,19 @@ public class RevivalAltarBlockEntity extends BlockEntity implements ImplementedI
         RevivalQueueState.get(server).removeQueuedPlayer(this.getPos(), world.getRegistryKey());
     }
 
-    public float getRenderingRotation(float rotationSpeedMultiplier) {
-        rotation += 0.5f * rotationSpeedMultiplier;
-        if (rotation >= 360) {
-            rotation = 0;
-        }
+    public float getRotation() {
         return rotation;
+    }
+
+    public float getPrevRotation() {
+        return prevRotation;
+    }
+
+    public float getRenderingRotation(RevivalAltarBlockEntity entity, float tickDelta) {
+        float delta = entity.getRotation() - entity.getPrevRotation();
+        if (delta < -180) delta += 360; // Triggers every rotation
+        if (delta > 180) delta -= 360;
+        return entity.getPrevRotation() + delta * tickDelta;
     }
 
     @Override

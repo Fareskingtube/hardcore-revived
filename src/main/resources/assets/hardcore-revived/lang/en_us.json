@@ -17,7 +17,9 @@
   "config.hardcore-revived.group.items": "Items",
 
   "config.hardcore-revived.option.heartActivationTime": "Heart Activation Time",
-  "config.hardcore-revived.option.description.heartActivationTime": "The time it takes to open the player selector screen from using the heart.",
+  "config.hardcore-revived.option.description.heartActivationTime": "The time it takes to open the player selector screen from using the heart",
+  "config.hardcore-revived.option.killPenalty": "Kill Penalty",
+  "config.hardcore-revived.option.description.killPenalty": "The amount of hp a player loses when killing another player",
 
   "gui.hardcore-revived.player_selector_screen.title": "Select a player",
   "gui.hardcore-revived.player_selector_screen.search": "Search for a player...",

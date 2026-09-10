@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -85,21 +86,20 @@ public class HardcoreRevived implements ModInitializer {
             }
         });
 
-        // TODO: Add config to hearts taken from killer or respawn victim
         // On killing a player
         ServerLivingEntityEvents.AFTER_DEATH.register((livingEntity, damageSource) -> {
+            CommonConfig config = CommonConfig.HANDLER.instance();
             if (damageSource.getAttacker() instanceof ServerPlayerEntity killer) {
                 // TODO: Idea: Revive the victim instead of making the killer lose health
-                if (livingEntity instanceof PlayerEntity) {
+                if (livingEntity instanceof CowEntity) {
                     World world = livingEntity.getWorld();
                     EntityAttributeInstance maxHealth = killer.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
                     if (maxHealth != null && maxHealth.getValue() - 4 > 0) {
                         killer.sendMessage(Text.translatable("misc.hardcore-revived.player_kill").formatted(Formatting.RED));
                         EntityType.LIGHTNING_BOLT.spawn((ServerWorld) world, killer.getBlockPos(), SpawnReason.TRIGGERED);
-                        maxHealth.setBaseValue(maxHealth.getValue() - 4);
+                        maxHealth.setBaseValue(maxHealth.getValue() - config.killPenalty);
                     }
                 }
-                //
                 if (livingEntity instanceof PassiveEntity victim && killer.getMainHandStack().getItem() == ModItems.BUTCHER_KNIFE) {
                     int count = victim.getRandom().nextBetween(1, 3);
                     ItemScatterer.spawn(

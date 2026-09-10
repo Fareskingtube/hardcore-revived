@@ -28,4 +28,7 @@ public class CommonConfig {
 
     @SerialEntry(comment = "Hardcore Heart activation time in ticks\nDefault: 20 (1 Second)")
     public int heartActivationTime = 20;
+
+    @SerialEntry(comment = "The amount of hp a player loses when killing another player\nDefault: 4 (2 Hearts)")
+    public int killPenalty = 4;
 }

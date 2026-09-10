@@ -30,7 +30,7 @@ public class RevivalAltarBlockEntityRenderer implements BlockEntityRenderer<Revi
         matrices.push();
         matrices.translate(0.5, 1.25, 0.5);
         matrices.scale(0.6f, 0.6f, 0.6f);
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(entity.getRenderingRotation(1.5f)));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(entity.getRenderingRotation(entity, tickDelta)));
 
         itemRenderer.renderItem(
                 stack,
