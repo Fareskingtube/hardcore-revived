@@ -3,25 +3,24 @@ package net.fareskingtube.component;
 import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
 import net.fareskingtube.HardcoreRevived;
-import net.minecraft.component.ComponentType;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import java.util.function.UnaryOperator;
 
 public class ModDataComponentTypes {
-    public static final ComponentType<Boolean> HAS_HEART = register("has_heart",
-            booleanBuilder -> booleanBuilder.codec(Codec.BOOL).packetCodec(PacketCodecs.BOOL));
+    public static final DataComponentType<Boolean> HAS_HEART = register("has_heart",
+            booleanBuilder -> booleanBuilder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
-    public static final ComponentType<GameProfile> SELECTED_PLAYER = register("selected_player",
-            gameProfileBuilder -> gameProfileBuilder.codec(Codecs.GAME_PROFILE_WITH_PROPERTIES).packetCodec(PacketCodecs.GAME_PROFILE));
+    public static final DataComponentType<GameProfile> SELECTED_PLAYER = register("selected_player",
+            gameProfileBuilder -> gameProfileBuilder.persistent(ExtraCodecs.GAME_PROFILE).networkSynchronized(ByteBufCodecs.GAME_PROFILE));
 
-    public static <T> ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
-        return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(HardcoreRevived.MOD_ID, name),
-                builderOperator.apply(ComponentType.builder()).build());
+    public static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
+        return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, ResourceLocation.fromNamespaceAndPath(HardcoreRevived.MOD_ID, name),
+                builderOperator.apply(DataComponentType.builder()).build());
     }
 
     public static void registerDataComponentTypes() {

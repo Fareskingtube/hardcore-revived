@@ -6,20 +6,20 @@ import net.fareskingtube.component.ModDataComponentTypes;
 import net.fareskingtube.config.CommonConfig;
 import net.fareskingtube.networking.packet.DeadPlayersPayloadS2C;
 import net.fareskingtube.persistent.DeadPlayersState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 // TODO: Make duration a config
 //  Make HardcoreHeartItem spawn in ancient city chests
 public class HardcoreHeartItem extends HoldActivateItem {
 
-    public HardcoreHeartItem(Settings settings) {
+    public HardcoreHeartItem(Properties settings) {
         super(settings, getHeartActivationTime());
     }
 
@@ -28,9 +28,9 @@ public class HardcoreHeartItem extends HoldActivateItem {
     }
 
     @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
         MinecraftServer server = world.getServer();
-        if (server != null && !world.isClient && user instanceof ServerPlayerEntity player) {
+        if (server != null && !world.isClientSide && user instanceof ServerPlayer player) {
             /* Gets the list of Players from Persistent Data and sends a Packet to the Client with the list of the dead players */
             ServerPlayNetworking.send(player, new DeadPlayersPayloadS2C(DeadPlayersState.get(server).getDeadPlayers()));
             // TODO: Delete this after testing
@@ -58,14 +58,14 @@ public class HardcoreHeartItem extends HoldActivateItem {
     }
 
     @Override
-    public Text getName(ItemStack stack) {
+    public Component getName(ItemStack stack) {
         GameProfile selected = stack.get(ModDataComponentTypes.SELECTED_PLAYER);
         String selectedPlayerName = selected != null ? selected.getName() : null;
 
-        MutableText name = Text.translatable("item.hardcore-revived.hardcore_heart");
+        MutableComponent name = Component.translatable("item.hardcore-revived.hardcore_heart");
 
         if (selectedPlayerName != null) {
-            name = name.append(Text.literal(" (" + selectedPlayerName + ")").formatted(Formatting.GREEN));
+            name = name.append(Component.literal(" (" + selectedPlayerName + ")").withStyle(ChatFormatting.GREEN));
         }
 
         return name;

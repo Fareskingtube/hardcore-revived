@@ -2,22 +2,21 @@ package net.fareskingtube.item;
 
 
 import com.google.common.base.Suppliers;
-import net.minecraft.block.Block;
-import net.minecraft.item.Items;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
-
 import java.util.function.Supplier;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
-public enum ModToolMaterials implements ToolMaterial {
+public enum ModToolMaterials implements Tier {
     BUTCHER_KNIFE_MATERIAL(BlockTags.INCORRECT_FOR_IRON_TOOL,
             130,
             6.0F,
             2.0F,
             14,
-            () -> Ingredient.ofItems(Items.IRON_INGOT));
+            () -> Ingredient.of(Items.IRON_INGOT));
 
     private final TagKey<Block> inverseTag;
     private final int itemDurability;
@@ -37,27 +36,27 @@ public enum ModToolMaterials implements ToolMaterial {
     }
 
     @Override
-    public int getDurability() {
+    public int getUses() {
         return this.itemDurability;
     }
 
     @Override
-    public float getMiningSpeedMultiplier() {
+    public float getSpeed() {
         return this.miningSpeed;
     }
 
     @Override
-    public float getAttackDamage() {
+    public float getAttackDamageBonus() {
         return this.attackDamage;
     }
 
     @Override
-    public TagKey<Block> getInverseTag() {
+    public TagKey<Block> getIncorrectBlocksForDrops() {
         return this.inverseTag;
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return this.enchantability;
     }
 

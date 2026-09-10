@@ -1,9 +1,9 @@
 package net.fareskingtube.persistent;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
-public record QueuedPlayer(GameProfile player, BlockPos pos, RegistryKey<World> world) {
+public record QueuedPlayer(GameProfile player, BlockPos pos, ResourceKey<Level> world) {
 }

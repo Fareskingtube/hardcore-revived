@@ -2,23 +2,22 @@ package net.fareskingtube.persistent;
 
 import com.mojang.authlib.GameProfile;
 import net.fareskingtube.HardcoreRevived;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentStateManager;
-
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.storage.DimensionDataStorage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class DeadPlayersState extends PersistentState {
+public class DeadPlayersState extends SavedData {
     private final List<GameProfile> deadPlayers = new ArrayList<>();
 
 
-    public static final PersistentState.Type<DeadPlayersState> TYPE = new PersistentState.Type<>(
+    public static final SavedData.Factory<DeadPlayersState> TYPE = new SavedData.Factory<>(
             DeadPlayersState::new,
             DeadPlayersState::createFromNbt,
             null
@@ -39,13 +38,13 @@ public class DeadPlayersState extends PersistentState {
     public void addDeadPlayer(GameProfile profile) {
         if (!isDead(profile.getId())) {
             deadPlayers.add(profile);
-            markDirty();
+            setDirty();
         }
     }
 
     public void removeDeadPlayer(UUID uuid) {
         if (deadPlayers.removeIf(p -> p.getId().equals(uuid))) {
-            markDirty();
+            setDirty();
         }
     }
 
@@ -54,24 +53,24 @@ public class DeadPlayersState extends PersistentState {
     }
 
 
-    private NbtCompound profileToNbt(GameProfile profile) {
-        NbtCompound nbt = new NbtCompound();
-        nbt.putUuid("Id", profile.getId());
+    private CompoundTag profileToNbt(GameProfile profile) {
+        CompoundTag nbt = new CompoundTag();
+        nbt.putUUID("Id", profile.getId());
         if (profile.getName() != null) {
             nbt.putString("Name", profile.getName());
         }
         return nbt;
     }
 
-    private GameProfile profileFromNbt(NbtCompound nbt) {
-        UUID id = nbt.getUuid("Id");
+    private GameProfile profileFromNbt(CompoundTag nbt) {
+        UUID id = nbt.getUUID("Id");
         String name = nbt.contains("Name") ? nbt.getString("Name") : "";
         return new GameProfile(id, name);
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        NbtList list = new NbtList();
+    public CompoundTag save(CompoundTag nbt, HolderLookup.Provider registryLookup) {
+        ListTag list = new ListTag();
         for (GameProfile profile : deadPlayers) {
             list.add(profileToNbt(profile));
         }
@@ -79,12 +78,12 @@ public class DeadPlayersState extends PersistentState {
         return nbt;
     }
 
-    public static DeadPlayersState createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    public static DeadPlayersState createFromNbt(CompoundTag nbt, HolderLookup.Provider registryLookup) {
         DeadPlayersState state = new DeadPlayersState();
-        NbtList list = nbt.getList("DeadPlayers", NbtElement.COMPOUND_TYPE);
-        for (NbtElement element : list) {
+        ListTag list = nbt.getList("DeadPlayers", Tag.TAG_COMPOUND);
+        for (Tag element : list) {
             try {
-                state.deadPlayers.add(state.profileFromNbt((NbtCompound) element));
+                state.deadPlayers.add(state.profileFromNbt((CompoundTag) element));
             } catch (Exception err) {
                 HardcoreRevived.LOGGER.warn("Skipping corrupted dead player entry", err);
             }
@@ -93,7 +92,7 @@ public class DeadPlayersState extends PersistentState {
     }
 
     public static DeadPlayersState get(MinecraftServer server) {
-        PersistentStateManager manager = server.getOverworld().getPersistentStateManager();
-        return manager.getOrCreate(TYPE, HardcoreRevived.MOD_ID + "_dead_players");
+        DimensionDataStorage manager = server.overworld().getDataStorage();
+        return manager.computeIfAbsent(TYPE, HardcoreRevived.MOD_ID + "_dead_players");
     }
 }

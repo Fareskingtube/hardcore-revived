@@ -15,21 +15,21 @@ import net.fareskingtube.networking.ModPackets;
 import net.fareskingtube.persistent.DeadPlayersState;
 import net.fareskingtube.persistent.QueuedPlayer;
 import net.fareskingtube.persistent.RevivalQueueState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,11 +54,11 @@ public class HardcoreRevived implements ModInitializer {
 
         // On player death
         ServerLivingEntityEvents.AFTER_DEATH.register((livingEntity, damageSource) -> {
-            if (livingEntity instanceof PlayerEntity player) {
-                if (!player.getWorld().isClient()) {
+            if (livingEntity instanceof Player player) {
+                if (!player.level().isClientSide()) {
                     MinecraftServer server = player.getServer();
                     if (server == null) return;
-                    DeadPlayersState.get(server).addDeadPlayer(new GameProfile(player.getUuid(), player.getNameForScoreboard()));
+                    DeadPlayersState.get(server).addDeadPlayer(new GameProfile(player.getUUID(), player.getScoreboardName()));
                 }
             }
         });
@@ -71,16 +71,16 @@ public class HardcoreRevived implements ModInitializer {
 
             RevivalQueueState state = RevivalQueueState.get(server);
 
-            QueuedPlayer queuedPlayer = state.getPlayer(serverPlayerEntity.getUuid());
+            QueuedPlayer queuedPlayer = state.getPlayer(serverPlayerEntity.getUUID());
 
             if (queuedPlayer == null) return;
 
-            ServerWorld world = server.getWorld(queuedPlayer.world());
+            ServerLevel world = server.getLevel(queuedPlayer.world());
 
             if (world == null) return;
 
             if (world.getBlockEntity(queuedPlayer.pos()) instanceof RevivalAltarBlockEntity revivalAltarBlockEntity) {
-                if (revivalAltarBlockEntity.isMultiblock(world, revivalAltarBlockEntity.getPos())) {
+                if (revivalAltarBlockEntity.isMultiblock(world, revivalAltarBlockEntity.getBlockPos())) {
                     revivalAltarBlockEntity.revivePlayer();
                 }
             }
@@ -89,21 +89,21 @@ public class HardcoreRevived implements ModInitializer {
         // On killing a player
         ServerLivingEntityEvents.AFTER_DEATH.register((livingEntity, damageSource) -> {
             CommonConfig config = CommonConfig.HANDLER.instance();
-            if (damageSource.getAttacker() instanceof ServerPlayerEntity killer) {
+            if (damageSource.getEntity() instanceof ServerPlayer killer) {
                 // TODO: Idea: Revive the victim instead of making the killer lose health
-                if (livingEntity instanceof CowEntity) {
-                    World world = livingEntity.getWorld();
-                    EntityAttributeInstance maxHealth = killer.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+                if (livingEntity instanceof ServerPlayer) {
+                    Level world = livingEntity.level();
+                    AttributeInstance maxHealth = killer.getAttribute(Attributes.MAX_HEALTH);
                     if (maxHealth != null && maxHealth.getValue() - 4 > 0) {
-                        killer.sendMessage(Text.translatable("misc.hardcore-revived.player_kill").formatted(Formatting.RED));
-                        EntityType.LIGHTNING_BOLT.spawn((ServerWorld) world, killer.getBlockPos(), SpawnReason.TRIGGERED);
+                        killer.sendSystemMessage(Component.translatable("misc.hardcore-revived.player_kill").withStyle(ChatFormatting.RED));
+                        EntityType.LIGHTNING_BOLT.spawn((ServerLevel) world, killer.blockPosition(), MobSpawnType.TRIGGERED);
                         maxHealth.setBaseValue(maxHealth.getValue() - config.killPenalty);
                     }
                 }
-                if (livingEntity instanceof PassiveEntity victim && killer.getMainHandStack().getItem() == ModItems.BUTCHER_KNIFE) {
-                    int count = victim.getRandom().nextBetween(1, 3);
-                    ItemScatterer.spawn(
-                            victim.getWorld(),
+                if (livingEntity instanceof AgeableMob victim && killer.getMainHandItem().getItem() == ModItems.BUTCHER_KNIFE) {
+                    int count = victim.getRandom().nextIntBetweenInclusive(1, 3);
+                    Containers.dropItemStack(
+                            victim.level(),
                             victim.getX(), victim.getY(), victim.getZ(),
                             new ItemStack(ModItems.BLOOD, count)
                     );
@@ -113,10 +113,10 @@ public class HardcoreRevived implements ModInitializer {
 
         // On damaging a player past half health
         ServerLivingEntityEvents.AFTER_DAMAGE.register((livingEntity, damageSource, v, v1, b) -> {
-            if (livingEntity instanceof PlayerEntity victim) {
-                if (damageSource.getAttacker() instanceof ServerPlayerEntity killer && victim.getHealth() < victim.getMaxHealth() / 2) {
+            if (livingEntity instanceof Player victim) {
+                if (damageSource.getEntity() instanceof ServerPlayer killer && victim.getHealth() < victim.getMaxHealth() / 2) {
                     if (killer.getMaxHealth() - 4 > 0) {
-                        killer.sendMessage(Text.translatable("misc.hardcore-revived.player_kill_warn").formatted(Formatting.YELLOW));
+                        killer.sendSystemMessage(Component.translatable("misc.hardcore-revived.player_kill_warn").withStyle(ChatFormatting.YELLOW));
                     }
                 }
             }
