@@ -4,13 +4,13 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fareskingtube.HardcoreRevived;
 import net.fareskingtube.networking.packet.PlayerSelectionPayloadC2S;
-import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public class ModPackets {
 
 
     // Payload from client to server (S2C) -> Serve to Client
-    private static void registerServerbound(PayloadTypeRegistry<RegistryByteBuf> registry) {
+    private static void registerServerbound(PayloadTypeRegistry<RegistryFriendlyByteBuf> registry) {
         registry.register(PlayerSelectionPayloadC2S.ID, PlayerSelectionPayloadC2S.STREAM_CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(PlayerSelectionPayloadC2S.ID, ServerboundPackets::handlePlayerSelectionPayload);

@@ -5,8 +5,8 @@ import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.fareskingtube.client.config.helper.ConfigTranslations;
 import net.fareskingtube.config.CommonConfig;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 
 public class ConfigUI {
@@ -14,10 +14,10 @@ public class ConfigUI {
         ClientConfig instance = ClientConfig.HANDLER.instance();
         CommonConfig commonInstance = CommonConfig.HANDLER.instance();
         return YetAnotherConfigLib.createBuilder()
-                .title(Text.translatable("config.hardcore-revived.title"))
+                .title(Component.translatable("config.hardcore-revived.title"))
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.translatable("config.hardcore-revived.category.client"))
-                        .tooltip(Text.translatable("config.hardcore-revived.category.description.client"))
+                        .name(Component.translatable("config.hardcore-revived.category.client"))
+                        .tooltip(Component.translatable("config.hardcore-revived.category.description.client"))
                         .group(OptionGroup.createBuilder()
                                 .name(ConfigTranslations.getGroupName("player_selection_screen"))
                                 .description(OptionDescription.of(ConfigTranslations.getGroupDescription("player_selection_screen")))
@@ -36,8 +36,8 @@ public class ConfigUI {
                                 .build())
                         .build())
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.translatable("config.hardcore-revived.category.common"))
-                        .tooltip(Text.translatable("config.hardcore-revived.category.description.common"))
+                        .name(Component.translatable("config.hardcore-revived.category.common"))
+                        .tooltip(Component.translatable("config.hardcore-revived.category.description.common"))
                         .group(OptionGroup.createBuilder()
                                 .name(ConfigTranslations.getGroupName("items"))
                                 .option(Option.<Integer>createBuilder()
@@ -47,7 +47,7 @@ public class ConfigUI {
                                                 val -> commonInstance.heartActivationTime = val)
                                         .controller(opt -> IntegerFieldControllerBuilder.create(opt)
                                                 .min(1)
-                                                .formatValue(val -> Text.literal(val + "t")))
+                                                .formatValue(val -> Component.literal(val + "t")))
                                         .build())
                                 .option(Option.<Integer>createBuilder()
                                         .name(ConfigTranslations.getOptionName("killPenalty"))
@@ -56,7 +56,7 @@ public class ConfigUI {
                                                 val -> commonInstance.killPenalty = val)
                                         .controller(opt -> IntegerFieldControllerBuilder.create(opt)
                                                 .min(0)
-                                                .formatValue(val -> Text.literal(val + "h")))
+                                                .formatValue(val -> Component.literal(val + "h")))
                                         .build())
                                 .build())
                         .build())

@@ -2,28 +2,27 @@ package net.fareskingtube.persistent;
 
 import com.mojang.authlib.GameProfile;
 import net.fareskingtube.HardcoreRevived;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentStateManager;
-import net.minecraft.world.World;
-
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.storage.DimensionDataStorage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class RevivalQueueState extends PersistentState {
+public class RevivalQueueState extends SavedData {
     private final List<QueuedPlayer> queuedPlayers = new ArrayList<>();
 
 
-    public static final Type<RevivalQueueState> TYPE = new Type<>(
+    public static final Factory<RevivalQueueState> TYPE = new Factory<>(
             RevivalQueueState::new,
             RevivalQueueState::createFromNbt,
             null
@@ -36,7 +35,7 @@ public class RevivalQueueState extends PersistentState {
                 .orElse(null);
     }
 
-    public QueuedPlayer getPlayer(BlockPos pos, RegistryKey<World> world) {
+    public QueuedPlayer getPlayer(BlockPos pos, ResourceKey<Level> world) {
         return queuedPlayers.stream()
                 .filter(p -> p.pos().equals(pos) && p.world().equals(world))
                 .findFirst()
@@ -47,7 +46,7 @@ public class RevivalQueueState extends PersistentState {
         return queuedPlayers.stream().anyMatch(p -> p.player().getId().equals(uuid));
     }
 
-    public boolean isQueued(BlockPos pos, RegistryKey<World> world) {
+    public boolean isQueued(BlockPos pos, ResourceKey<Level> world) {
         return queuedPlayers.stream().anyMatch(p -> p.pos().equals(pos) && p.world().equals(world));
     }
 
@@ -55,21 +54,21 @@ public class RevivalQueueState extends PersistentState {
     public void addQueuedPlayer(QueuedPlayer profile) {
         if (!isQueued(profile.player().getId())) {
             queuedPlayers.add(profile);
-            markDirty();
+            setDirty();
         }
     }
 
-    public void removeQueuedPlayer(UUID uuid, BlockPos pos, RegistryKey<World> world) {
+    public void removeQueuedPlayer(UUID uuid, BlockPos pos, ResourceKey<Level> world) {
         if (queuedPlayers.removeIf(p -> p.player().getId().equals(uuid)
                 && p.pos().equals(pos)
                 && p.world().equals(world))) {
-            markDirty();
+            setDirty();
         }
     }
 
-    public void removeQueuedPlayer(BlockPos pos, RegistryKey<World> world) {
+    public void removeQueuedPlayer(BlockPos pos, ResourceKey<Level> world) {
         if (queuedPlayers.removeIf(p -> p.pos().equals(pos) && p.world().equals(world))) {
-            markDirty();
+            setDirty();
         }
     }
 
@@ -78,40 +77,40 @@ public class RevivalQueueState extends PersistentState {
     }
 
 
-    private NbtCompound profileToNbt(GameProfile profile) {
-        NbtCompound nbt = new NbtCompound();
-        nbt.putUuid("Id", profile.getId());
+    private CompoundTag profileToNbt(GameProfile profile) {
+        CompoundTag nbt = new CompoundTag();
+        nbt.putUUID("Id", profile.getId());
         if (profile.getName() != null) {
             nbt.putString("Name", profile.getName());
         }
         return nbt;
     }
 
-    private GameProfile profileFromNbt(NbtCompound nbt) {
-        UUID id = nbt.getUuid("Id");
+    private GameProfile profileFromNbt(CompoundTag nbt) {
+        UUID id = nbt.getUUID("Id");
         String name = nbt.contains("Name") ? nbt.getString("Name") : "";
         return new GameProfile(id, name);
     }
 
-    private NbtCompound queuedPlayerToNbt(QueuedPlayer queuedPlayer) {
-        NbtCompound nbt = new NbtCompound();
+    private CompoundTag queuedPlayerToNbt(QueuedPlayer queuedPlayer) {
+        CompoundTag nbt = new CompoundTag();
         nbt.put("Profile", profileToNbt(queuedPlayer.player()));
         nbt.putLong("Pos", queuedPlayer.pos().asLong());
-        nbt.putString("World", queuedPlayer.world().getValue().toString());
+        nbt.putString("World", queuedPlayer.world().location().toString());
         return nbt;
     }
 
-    private QueuedPlayer queuedPlayerFromNbt(NbtCompound nbt) {
+    private QueuedPlayer queuedPlayerFromNbt(CompoundTag nbt) {
         GameProfile profile = profileFromNbt(nbt.getCompound("Profile"));
-        BlockPos pos = BlockPos.fromLong(nbt.getLong("Pos"));
-        Identifier worldId = Identifier.of(nbt.getString("World"));
-        RegistryKey<World> world = RegistryKey.of(RegistryKeys.WORLD, worldId);
+        BlockPos pos = BlockPos.of(nbt.getLong("Pos"));
+        ResourceLocation worldId = ResourceLocation.parse(nbt.getString("World"));
+        ResourceKey<Level> world = ResourceKey.create(Registries.DIMENSION, worldId);
         return new QueuedPlayer(profile, pos, world);
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        NbtList list = new NbtList();
+    public CompoundTag save(CompoundTag nbt, HolderLookup.Provider registryLookup) {
+        ListTag list = new ListTag();
         for (QueuedPlayer queuedPlayer : queuedPlayers) {
             list.add(queuedPlayerToNbt(queuedPlayer));
         }
@@ -119,12 +118,12 @@ public class RevivalQueueState extends PersistentState {
         return nbt;
     }
 
-    public static RevivalQueueState createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    public static RevivalQueueState createFromNbt(CompoundTag nbt, HolderLookup.Provider registryLookup) {
         RevivalQueueState state = new RevivalQueueState();
-        NbtList list = nbt.getList("QueuedPlayers", NbtElement.COMPOUND_TYPE);
-        for (NbtElement element : list) {
+        ListTag list = nbt.getList("QueuedPlayers", Tag.TAG_COMPOUND);
+        for (Tag element : list) {
             try {
-                state.queuedPlayers.add(state.queuedPlayerFromNbt((NbtCompound) element));
+                state.queuedPlayers.add(state.queuedPlayerFromNbt((CompoundTag) element));
             } catch (Exception err) {
                 HardcoreRevived.LOGGER.warn("Skipping corrupted queued player revival entry", err);
             }
@@ -133,7 +132,7 @@ public class RevivalQueueState extends PersistentState {
     }
 
     public static RevivalQueueState get(MinecraftServer server) {
-        PersistentStateManager manager = server.getOverworld().getPersistentStateManager();
-        return manager.getOrCreate(TYPE, HardcoreRevived.MOD_ID + "_queued_players");
+        DimensionDataStorage manager = server.overworld().getDataStorage();
+        return manager.computeIfAbsent(TYPE, HardcoreRevived.MOD_ID + "_queued_players");
     }
 }

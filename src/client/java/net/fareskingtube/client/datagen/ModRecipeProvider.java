@@ -4,68 +4,68 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fareskingtube.block.ModBlocks;
 import net.fareskingtube.item.ModItems;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.server.recipe.RecipeExporter;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends FabricRecipeProvider {
-    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    public void generate(RecipeExporter exporter) {
+    public void buildRecipes(RecipeOutput exporter) {
         // Revival Altar Recipe
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModBlocks.REVIVAL_ALTAR)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.REVIVAL_ALTAR)
                 .pattern("BGB")
                 .pattern("BDB")
                 .pattern("DDD")
-                .input('B', ModBlocks.BLOOD_BLOCK)
-                .input('G', Blocks.GOLD_BLOCK)
-                .input('D', Blocks.DEEPSLATE_TILES)
-                .criterion(hasItem(ModBlocks.REVIVAL_ALTAR), conditionsFromItem(ModBlocks.BLOOD_BLOCK))
-                .offerTo(exporter);
+                .define('B', ModBlocks.BLOOD_BLOCK)
+                .define('G', Blocks.GOLD_BLOCK)
+                .define('D', Blocks.DEEPSLATE_TILES)
+                .unlockedBy(getHasName(ModBlocks.REVIVAL_ALTAR), has(ModBlocks.BLOOD_BLOCK))
+                .save(exporter);
         // Heart Injector recipe (temporary)
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.HEART_INJECTOR)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HEART_INJECTOR)
                 .pattern("I ")
                 .pattern(" G")
-                .input('I', Items.IRON_INGOT)
-                .input('G', Items.GLASS_BOTTLE)
-                .criterion(hasItem(Items.GLASS_BOTTLE), conditionsFromItem(ModItems.HEART_INJECTOR))
-                .offerTo(exporter);
+                .define('I', Items.IRON_INGOT)
+                .define('G', Items.GLASS_BOTTLE)
+                .unlockedBy(getHasName(Items.GLASS_BOTTLE), has(ModItems.HEART_INJECTOR))
+                .save(exporter);
         // Heart Extractor recipe (temporary)
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.HEART_EXTRACTOR)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.HEART_EXTRACTOR)
                 .pattern("S S")
                 .pattern("SSS")
                 .pattern(" S ")
-                .input('S', Items.STICK)
-                .criterion(hasItem(Items.STICK), conditionsFromItem(ModItems.HEART_EXTRACTOR))
-                .offerTo(exporter);
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(Items.STICK), has(ModItems.HEART_EXTRACTOR))
+                .save(exporter);
 
         // Butcher Knife Recipe
-        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ModItems.BUTCHER_KNIFE)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.BUTCHER_KNIFE)
                 .pattern("I ")
                 .pattern(" S")
-                .input('I', Items.IRON_INGOT)
-                .input('S', Items.STICK)
-                .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(ModItems.BUTCHER_KNIFE))
-                .offerTo(exporter);
+                .define('I', Items.IRON_INGOT)
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(Items.IRON_INGOT), has(ModItems.BUTCHER_KNIFE))
+                .save(exporter);
 
         // Blood Recipe
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLOOD_BLOCK)
-                .input(ModItems.BLOOD, 4)
-                .criterion(hasItem(ModItems.BLOOD), conditionsFromItem(ModBlocks.BLOOD_BLOCK))
-                .offerTo(exporter);
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, ModItems.BLOOD, 4)
-                .input(ModBlocks.BLOOD_BLOCK)
-                .criterion(hasItem(ModBlocks.BLOOD_BLOCK), conditionsFromItem(ModItems.BLOOD))
-                .offerTo(exporter);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BLOOD_BLOCK)
+                .requires(ModItems.BLOOD, 4)
+                .unlockedBy(getHasName(ModItems.BLOOD), has(ModBlocks.BLOOD_BLOCK))
+                .save(exporter);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.BLOOD, 4)
+                .requires(ModBlocks.BLOOD_BLOCK)
+                .unlockedBy(getHasName(ModBlocks.BLOOD_BLOCK), has(ModItems.BLOOD))
+                .save(exporter);
 
     }
 }

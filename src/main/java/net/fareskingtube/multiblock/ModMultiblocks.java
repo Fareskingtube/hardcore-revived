@@ -2,12 +2,12 @@ package net.fareskingtube.multiblock;
 
 import net.fareskingtube.HardcoreRevived;
 import net.fareskingtube.block.ModBlocks;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import vazkii.patchouli.api.IMultiblock;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -108,22 +108,22 @@ public class ModMultiblocks {
 
                     },
                     'S', Blocks.POLISHED_BLACKSTONE_BRICK_SLAB,
-                    'n', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH),
-                    'e', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.EAST),
-                    'w', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.WEST),
-                    's', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.SOUTH),
+                    'n', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH),
+                    'e', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST),
+                    'w', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST),
+                    's', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH),
                     'B', Blocks.POLISHED_BLACKSTONE_BRICKS,
                     'P', Blocks.POLISHED_BLACKSTONE,
                     'C', Blocks.CHISELED_POLISHED_BLACKSTONE,
                     'G', Blocks.GOLD_BLOCK,
                     'b', ModBlocks.BLOOD_BLOCK,
-                    '1', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(Properties.BLOCK_HALF, BlockHalf.TOP),
-                    '2', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.EAST).with(Properties.BLOCK_HALF, BlockHalf.TOP),
-                    '3', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.WEST).with(Properties.BLOCK_HALF, BlockHalf.TOP),
-                    '4', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.SOUTH).with(Properties.BLOCK_HALF, BlockHalf.TOP),
+                    '1', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH).setValue(BlockStateProperties.HALF, Half.TOP),
+                    '2', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST).setValue(BlockStateProperties.HALF, Half.TOP),
+                    '3', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST).setValue(BlockStateProperties.HALF, Half.TOP),
+                    '4', Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.SOUTH).setValue(BlockStateProperties.HALF, Half.TOP),
                     'W', Blocks.POLISHED_BLACKSTONE_BRICK_WALL,
                     'F', Blocks.NETHER_BRICK_FENCE,
-                    'T', Blocks.POLISHED_BLACKSTONE_BRICK_SLAB.getDefaultState().with(Properties.SLAB_TYPE, SlabType.TOP),
+                    'T', Blocks.POLISHED_BLACKSTONE_BRICK_SLAB.defaultBlockState().setValue(BlockStateProperties.SLAB_TYPE, SlabType.TOP),
                     'R', Blocks.REDSTONE_BLOCK,
                     '0', ModBlocks.REVIVAL_ALTAR
             )
@@ -132,7 +132,7 @@ public class ModMultiblocks {
 
 
     public static IMultiblock registerMultiBlock(String name, IMultiblock multiblock) {
-        return PatchouliAPI.get().registerMultiblock(Identifier.of(HardcoreRevived.MOD_ID, name), multiblock);
+        return PatchouliAPI.get().registerMultiblock(ResourceLocation.fromNamespaceAndPath(HardcoreRevived.MOD_ID, name), multiblock);
     }
 
     public static void registerModMultiBlocks() {

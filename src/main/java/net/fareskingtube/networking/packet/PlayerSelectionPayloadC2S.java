@@ -2,18 +2,18 @@ package net.fareskingtube.networking.packet;
 
 import com.mojang.authlib.GameProfile;
 import net.fareskingtube.HardcoreRevived;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
-public record PlayerSelectionPayloadC2S(GameProfile player) implements CustomPayload {
-    public static final CustomPayload.Id<PlayerSelectionPayloadC2S> ID =
-            new CustomPayload.Id<>(Identifier.of(HardcoreRevived.MOD_ID, "dead_players"));
+public record PlayerSelectionPayloadC2S(GameProfile player) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<PlayerSelectionPayloadC2S> ID =
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(HardcoreRevived.MOD_ID, "dead_players"));
 
-    public static final PacketCodec<PacketByteBuf, PlayerSelectionPayloadC2S> STREAM_CODEC = PacketCodec.tuple(
-            PacketCodecs.GAME_PROFILE,
+    public static final StreamCodec<FriendlyByteBuf, PlayerSelectionPayloadC2S> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.GAME_PROFILE,
             PlayerSelectionPayloadC2S::player,
 
             PlayerSelectionPayloadC2S::new
@@ -21,7 +21,7 @@ public record PlayerSelectionPayloadC2S(GameProfile player) implements CustomPay
 
 
     @Override
-    public Id<? extends CustomPayload> getId() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 }

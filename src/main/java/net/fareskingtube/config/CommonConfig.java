@@ -6,11 +6,11 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fareskingtube.HardcoreRevived;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class CommonConfig {
     public static ConfigClassHandler<CommonConfig> HANDLER = ConfigClassHandler.createBuilder(CommonConfig.class)
-            .id(Identifier.of(HardcoreRevived.MOD_ID, "common-config"))
+            .id(ResourceLocation.fromNamespaceAndPath(HardcoreRevived.MOD_ID, "common-config"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                     .setPath(FabricLoader.getInstance().getConfigDir().resolve(HardcoreRevived.MOD_ID + "-common.json5"))
                     .appendGsonBuilder(GsonBuilder::setPrettyPrinting)
